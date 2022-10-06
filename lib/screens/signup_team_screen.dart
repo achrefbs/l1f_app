@@ -7,15 +7,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../vars.dart';
 
 class SignUpTeamScreen extends StatefulWidget {
-  String email;
-  String fullname;
-  String password;
-  String phoneNumber;
-  bool isMale;
-  String username;
-  String teamName;
+  final String email;
+  final String fullname;
+  final String password;
+  final String phoneNumber;
+  final bool isMale;
+  final String username;
+  final String teamName;
 
-  SignUpTeamScreen({
+  const SignUpTeamScreen({
     super.key,
     required this.email,
     required this.password,
@@ -52,7 +52,7 @@ class SignUpTeamScreenState extends State<SignUpTeamScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(),
+            builder: (context) => const HomeScreen(),
           ),
         );
       } else if (value == Errors.weakError) {

@@ -1,8 +1,9 @@
 import 'package:fantasyapp/models/manager.dart';
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/providers/game_state_helper.dart';
-import 'package:fantasyapp/screens/team_history_screen.dart';
 import 'package:fantasyapp/widgets/border_card.dart';
+import 'package:fantasyapp/widgets/fantasy_page/current_week_card.dart';
+import 'package:fantasyapp/widgets/fantasy_page/next_week_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,43 +25,11 @@ class _FantasyPageState extends State<FantasyPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         BorderCard(
-          flex: 1,
+          height: 100,
           widget: Text(manager.username),
         ),
-        BorderCard(
-          flex: 6,
-          widget: Column(children: [
-            Text(
-                "Game Week: ${gameState.getCurrentGameState().currentGameWeek}"),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => TeamHistoryScreen(
-                        manager: manager,
-                      ),
-                    ),
-                  ),
-                  child: Text("Points: ${auth.current!.currentWeekPoints}"),
-                ),
-                FutureBuilder(
-                    future: gameState.getHighestPointsManager(),
-                    builder: (context, AsyncSnapshot<Manager> snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text("something went wrong!");
-                      }
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return Text(
-                            "Highest: ${snapshot.data!.currentWeekPoints}");
-                      }
-                      return const CircularProgressIndicator();
-                    }),
-              ],
-            ),
-          ]),
-        ),
+        CurrentWeekCard(gameState: gameState, manager: manager, auth: auth),
+        NextWeekCard(gameState: gameState),
       ],
     );
   }

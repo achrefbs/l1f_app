@@ -1,10 +1,7 @@
-import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
 import 'package:fantasyapp/screens/signup_team_screen.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -71,7 +68,6 @@ class SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AuthHelper auth = Provider.of<AuthHelper>(context);
     return Scaffold(
         body: Container(
             decoration: const BoxDecoration(
@@ -161,25 +157,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                                                 color: kPlayerCardColorPrimary),
                                           ),
                                           hintText: 'Username',
-                                          prefixIcon: Icon(Icons.person,
-                                              color: kPlayerCardColorPrimary),
-                                        ),
-                                      )),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      child: TextField(
-                                        controller: teamNameController,
-                                        decoration: const InputDecoration(
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: kPlayerCardColorPrimary),
-                                          ),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: kPlayerCardColorPrimary),
-                                          ),
-                                          hintText: 'Team Name',
                                           prefixIcon: Icon(Icons.person,
                                               color: kPlayerCardColorPrimary),
                                         ),

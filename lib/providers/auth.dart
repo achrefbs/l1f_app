@@ -62,7 +62,6 @@ class AuthHelper with ChangeNotifier {
         return Errors.existsError;
       }
     } catch (e) {
-      print(e);
       return Errors.error;
     }
 
