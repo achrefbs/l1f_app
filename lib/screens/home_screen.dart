@@ -3,7 +3,7 @@ import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
 import 'package:fantasyapp/screens/pages/fixtures_page.dart';
 import 'package:fantasyapp/screens/pages/home_page.dart';
-import 'package:fantasyapp/screens/pages/profile_page.dart';
+import 'package:fantasyapp/screens/pages/Fantasy_page.dart';
 import 'package:fantasyapp/screens/pick_team_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const HomePage(),
     const FixturesPage(),
     const PickTeamScreen(),
-    const ProfilePage(),
+    const FantasyPage(),
   ];
   int selectedIndex = 0;
 

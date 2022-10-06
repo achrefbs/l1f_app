@@ -1,4 +1,5 @@
 import 'package:fantasyapp/providers/auth.dart';
+import 'package:fantasyapp/providers/game_state_helper.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,11 +34,13 @@ class MyApp extends StatelessWidget {
                 ChangeNotifierProvider(
                   create: (_) => AuthHelper(),
                 ),
+                ChangeNotifierProvider(
+                  create: (_) => GameStateHelper(),
+                ),
               ],
               child: const MaterialApp(
                 title: "ligue 1 fantasy",
                 home: HomeScreen(),
-                // HomeScreen(),
               ),
             );
           }

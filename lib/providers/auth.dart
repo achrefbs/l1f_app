@@ -16,7 +16,6 @@ enum Errors {
 class AuthHelper with ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   Manager? current;
-  int currentGameWeek = 0;
 
   final usersRef =
       FirebaseFirestore.instance.collection('managers').withConverter<Manager>(
@@ -106,15 +105,5 @@ class AuthHelper with ChangeNotifier {
       current = manager;
     }
     return current!;
-  }
-
-  //get highest points manager for gameweek
-  Future<Manager> getHighestPointsManager() async {
-    final manager = await usersRef
-        .orderBy('currentWeekPoints', descending: true)
-        .limit(1)
-        .get()
-        .then((value) => value.docs.first.data());
-    return manager;
   }
 }

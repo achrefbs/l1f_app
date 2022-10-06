@@ -37,6 +37,7 @@ class Manager {
   int totalPoints;
   int currentWeekPoints = 0;
   int freeTransfers;
+  bool initializedTeam;
   Map<String, int> pointsHistory;
   Map<String, dynamic> currentSquad;
   Map<String, Map<String, dynamic>> squadHistory;
@@ -48,6 +49,7 @@ class Manager {
     required this.isMale,
     required this.username,
     required this.teamName,
+    this.initializedTeam = false,
     this.benchBoost = true,
     this.tripleCaptain = true,
     this.freeHit = true,
@@ -80,6 +82,7 @@ class Manager {
           wildcard: json['wildcard'] as bool,
           freeTransfers: json['freeTransfers'] as int,
           teamName: json['teamName'] as String,
+          initializedTeam: json['initializedTeam'] as bool,
         );
 
   Map<String, Object> toJson() {
@@ -101,6 +104,7 @@ class Manager {
       'wildcard': wildcard,
       'freeTransfers': freeTransfers,
       'teamName': teamName,
+      'initializedTeam': initializedTeam,
     };
   }
 }
