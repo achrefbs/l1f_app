@@ -2,9 +2,9 @@ import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:flutter/material.dart';
 
-class PlayerPointsCard extends StatelessWidget {
+class PlayerTransferCard extends StatelessWidget {
   final Player player;
-  const PlayerPointsCard({
+  const PlayerTransferCard({
     Key? key,
     required this.player,
   }) : super(key: key);
@@ -16,7 +16,7 @@ class PlayerPointsCard extends StatelessWidget {
         Column(
           children: [
             const Image(
-              image: AssetImage("player.shirt"),
+              image: AssetImage("images/est-shirt.png"),
               height: kPlayerCardShirtHeight,
             ),
             Container(
@@ -47,10 +47,10 @@ class PlayerPointsCard extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(6),
                       bottomRight: Radius.circular(6))),
-              child: const Text(
-                "player.nextMatch",
+              child: Text(
+                player.price.toString(),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: kPlayerCardTextColorSecondary,
                   fontSize: kPlayerCardFontSize,
                 ),
@@ -61,8 +61,7 @@ class PlayerPointsCard extends StatelessWidget {
         Positioned(
           top: 5,
           right: 5,
-          child: true
-              //player.isCaptain
+          child: false //player.isCaptain
               ? Container(
                   width: 15,
                   height: 15,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fantasyapp/models/manager.dart';
+import 'package:fantasyapp/models/squad.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,7 @@ class AuthHelper with ChangeNotifier {
         email: email,
         password: password,
       );
-
+      var squad = Squad();
       usersRef.add(
         Manager(
           fullname: fullname,
@@ -53,6 +54,7 @@ class AuthHelper with ChangeNotifier {
           isMale: isMale,
           username: username,
           teamName: teamName,
+          currentSquad: squad,
         ),
       );
     } on FirebaseAuthException catch (e) {

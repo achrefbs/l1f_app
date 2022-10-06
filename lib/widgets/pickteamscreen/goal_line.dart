@@ -1,7 +1,6 @@
 import 'package:fantasyapp/widgets/pickteamscreen/player_lineup_card.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class GoadLine extends StatelessWidget {
   GoadLine({Key? key, required this.playerID}) : super(key: key);
   //Player player;

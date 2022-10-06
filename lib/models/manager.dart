@@ -35,29 +35,28 @@ class Manager {
   int freeTransfers;
   bool initializedTeam;
   Map<String, int> pointsHistory;
-  Squad? currentSquad;
+  Squad currentSquad;
   Map<String, Map<String, dynamic>> squadHistory;
-  Manager(
-      {required this.firebaseID,
-      required this.fullname,
-      required this.email,
-      required this.phonenumber,
-      required this.isMale,
-      required this.username,
-      required this.teamName,
-      this.initializedTeam = false,
-      this.benchBoost = true,
-      this.tripleCaptain = true,
-      this.freeHit = true,
-      this.wildcard = true,
-      this.freeTransfers = 1,
-      this.totalPoints = 0,
-      this.currentWeekPoints = 0,
-      this.pointsHistory = pointsHistoryE,
-      this.squadHistory = squadHistoryE,
-      this.currentSquad}) {
-    currentSquad ??= Squad();
-  }
+  Manager({
+    required this.firebaseID,
+    required this.fullname,
+    required this.email,
+    required this.phonenumber,
+    required this.isMale,
+    required this.username,
+    required this.teamName,
+    this.initializedTeam = false,
+    this.benchBoost = true,
+    this.tripleCaptain = true,
+    this.freeHit = true,
+    this.wildcard = true,
+    this.freeTransfers = 1,
+    this.totalPoints = 0,
+    this.currentWeekPoints = 0,
+    this.pointsHistory = pointsHistoryE,
+    this.squadHistory = squadHistoryE,
+    required this.currentSquad,
+  });
 
   Manager.fromJson(Map<String, dynamic> json)
       : this(
@@ -92,7 +91,7 @@ class Manager {
       'totalPoints': totalPoints,
       'currentWeekPoints': currentWeekPoints,
       'pointsHistory': pointsHistory,
-      'currentSquad': currentSquad!,
+      'currentSquad': currentSquad.toJson(),
       'squadHistory': squadHistory,
       'username': username,
       'benchBoost': benchBoost,
