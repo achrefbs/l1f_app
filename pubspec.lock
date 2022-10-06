@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  archive:
+    dependency: transitive
+    description:
+      name: archive
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.3.1"
   async:
     dependency: transitive
     description:
@@ -78,7 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
-<<<<<<< HEAD
   crypto:
     dependency: transitive
     description:
@@ -86,7 +92,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
-=======
   csslib:
     dependency: transitive
     description:
@@ -94,7 +99,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.2"
->>>>>>> 1b64dd54569ab7ceb3bc5f1f2acfa13b428ebc86
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -173,7 +177,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-<<<<<<< HEAD
   group_button:
     dependency: "direct main"
     description:
@@ -181,7 +184,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.2.2"
-=======
   html:
     dependency: transitive
     description:
@@ -189,7 +191,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.15.0"
->>>>>>> 1b64dd54569ab7ceb3bc5f1f2acfa13b428ebc86
   http_parser:
     dependency: transitive
     description:
@@ -285,7 +286,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.1"
+    version: "1.9.0"
   stack_trace:
     dependency: transitive
     description:

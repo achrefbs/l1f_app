@@ -1,6 +1,5 @@
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
-import 'package:fantasyapp/screens/login_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -37,8 +36,7 @@ class MyApp extends StatelessWidget {
               ],
               child: const MaterialApp(
                 title: "ligue 1 fantasy",
-                home: 
-                LoginScreen(),
+                home: HomeScreen(),
                 // HomeScreen(),
               ),
             );

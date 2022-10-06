@@ -6,16 +6,16 @@ class VideoPlayerWidget extends StatefulWidget {
   const VideoPlayerWidget({Key? key}) : super(key: key);
 
   @override
-  _VideoAppState createState() => _VideoAppState();
+  VideoAppState createState() => VideoAppState();
 }
 
-class _VideoAppState extends State<VideoPlayerWidget> {
-  late VideoPlayerController _controller;
+class VideoAppState extends State<VideoPlayerWidget> {
+  late VideoPlayerController controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
+    controller = VideoPlayerController.network(
         'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
@@ -40,14 +40,14 @@ class _VideoAppState extends State<VideoPlayerWidget> {
                     topLeft: Radius.circular(Sizes.dimen_10),
                     topRight: Radius.circular(Sizes.dimen_10)),
                 child: AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
+                  aspectRatio: controller.value.aspectRatio,
                   child: GestureDetector(
-                    child: VideoPlayer(_controller),
+                    child: VideoPlayer(controller),
                     onTap: () {
                       setState(() {
-                        _controller.value.isPlaying
-                            ? _controller.pause()
-                            : _controller.play();
+                        controller.value.isPlaying
+                            ? controller.pause()
+                            : controller.play();
                       });
                     },
                   ),
@@ -59,6 +59,6 @@ class _VideoAppState extends State<VideoPlayerWidget> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    controller.dispose();
   }
 }
