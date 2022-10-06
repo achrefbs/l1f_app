@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SelectGK extends StatelessWidget {
-  SelectGK({Key? key}) : super(key: key);
+  const SelectGK({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
