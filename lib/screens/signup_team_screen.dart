@@ -7,19 +7,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../vars.dart';
 
 class SignUpTeamScreen extends StatefulWidget {
-  const SignUpTeamScreen({super.key});
+  String email;
+  String fullname;
+  String password;
+  String phoneNumber;
+  bool isMale;
+  String username;
+  String teamName;
+
+  SignUpTeamScreen({
+    super.key,
+    required this.email,
+    required this.password,
+    required this.fullname,
+    required this.username,
+    required this.phoneNumber,
+    required this.isMale,
+    required this.teamName,
+  });
 
   @override
   createState() => SignUpTeamScreenState();
 }
 
 class SignUpTeamScreenState extends State<SignUpTeamScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordConfirmController = TextEditingController();
-  TextEditingController fullnameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
   TextEditingController teamNameController = TextEditingController();
 
   bool obscure = true;
@@ -28,6 +39,12 @@ class SignUpTeamScreenState extends State<SignUpTeamScreen> {
     FocusScope.of(context).unfocus();
     var res = auth.attemptSignUp(
       teamName: teamNameController.text.trim(),
+      email: widget.email,
+      fullname: widget.fullname,
+      password: widget.password,
+      phonenumber: widget.phoneNumber,
+      isMale: widget.isMale,
+      username: widget.username,
     );
     res.then((value) {
       if (value == Errors.none) {
@@ -35,9 +52,15 @@ class SignUpTeamScreenState extends State<SignUpTeamScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) => HomeScreen(),
           ),
         );
+      } else if (value == Errors.weakError) {
+        showError(context, "The password provided is too weak.");
+      } else if (value == Errors.matchError) {
+        showError(context, "Passwords doesn't match");
+      } else if (value == Errors.existsError) {
+        showError(context, "The account already exists for that email.");
       } else {
         showError(context, "Failed to create account!");
       }

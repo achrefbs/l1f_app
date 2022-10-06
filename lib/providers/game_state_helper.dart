@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class GameStateHelper extends ChangeNotifier {
   GameState? gameState;
   final usersRef =
-      FirebaseFirestore.instance.collection('managers').withConverter<Manager>(
+      FirebaseFirestore.instance.collection('Managers').withConverter<Manager>(
             fromFirestore: (snapshot, _) {
               return Manager.fromJson(
                 snapshot.data() ?? {},

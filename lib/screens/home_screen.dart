@@ -3,7 +3,7 @@ import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
 import 'package:fantasyapp/screens/pages/fixtures_page.dart';
 import 'package:fantasyapp/screens/pages/home_page.dart';
-import 'package:fantasyapp/screens/pages/Fantasy_page.dart';
+import 'package:fantasyapp/screens/pages/fantasy_page.dart';
 import 'package:fantasyapp/screens/pick_team_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             future: currentManager,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
+                print(snapshot.error);
                 return const Center(
                   child: Text("something went wrong!"),
                 );

@@ -18,7 +18,7 @@ class AuthHelper with ChangeNotifier {
   Manager? current;
 
   final usersRef =
-      FirebaseFirestore.instance.collection('managers').withConverter<Manager>(
+      FirebaseFirestore.instance.collection('Managers').withConverter<Manager>(
             fromFirestore: (snapshot, _) {
               return Manager.fromJson(
                 snapshot.data() ?? {},
@@ -30,46 +30,42 @@ class AuthHelper with ChangeNotifier {
   get isLoggedIn => auth.currentUser != null;
 
   attemptSignUp({
-    email,
-    fullname,
-    password,
-    passwordConfirmation,
-    phonenumber,
-    isMale,
-    username,
-    teamName,
+    required String email,
+    required String fullname,
+    required String password,
+    required String phonenumber,
+    required bool isMale,
+    required String username,
+    required String teamName,
   }) async {
-    if (!(password == passwordConfirmation)) {
-      return Errors.matchError;
-    } else {
-      try {
-        UserCredential userCredential =
-            await auth.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
+    try {
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-        usersRef.add(
-          Manager(
-            fullname: fullname,
-            email: email,
-            firebaseID: userCredential.user!.uid,
-            phonenumber: phonenumber,
-            isMale: isMale,
-            username: username,
-            teamName: teamName,
-          ),
-        );
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          return Errors.weakError;
-        } else if (e.code == 'email-already-in-use') {
-          return Errors.existsError;
-        }
-      } catch (e) {
-        return Errors.error;
+      usersRef.add(
+        Manager(
+          fullname: fullname,
+          email: email,
+          firebaseID: userCredential.user!.uid,
+          phonenumber: phonenumber,
+          isMale: isMale,
+          username: username,
+          teamName: teamName,
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return Errors.weakError;
+      } else if (e.code == 'email-already-in-use') {
+        return Errors.existsError;
       }
+    } catch (e) {
+      print(e);
+      return Errors.error;
     }
+
     return Errors.none;
   }
 

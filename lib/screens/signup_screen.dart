@@ -1,11 +1,10 @@
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
-import 'package:fantasyapp/screens/signupteam.dart';
+import 'package:fantasyapp/screens/signup_team_screen.dart';
+import 'package:fantasyapp/vars.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-
-import '../vars.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -20,39 +19,30 @@ class SignUpScreenState extends State<SignUpScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
   TextEditingController fullnameController = TextEditingController();
+  TextEditingController teamNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   bool obscure = true;
 
-  send(AuthHelper auth) {
-    FocusScope.of(context).unfocus();
-    var res = auth.attemptSignUp(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-      passwordConfirmation: passwordConfirmController.text.trim(),
-      fullname: fullnameController.text.trim(),
-      phonenumber: phoneNumberController.text.trim(),
-      username: usernameController.text.trim(),
-      isMale: true,
-    );
-    res.then((value) {
-      if (value == Errors.none) {
-        showInfo(context, "Account created successfully!");
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const SignUpTeamScreen(),
-          ),
-        );
-      } else if (value == Errors.weakError) {
-        showError(context, "The password provided is too weak.");
-      } else if (value == Errors.matchError) {
-        showError(context, "Passwords doesn't match");
-      } else if (value == Errors.existsError) {
-        showError(context, "The account already exists for that email.");
-      } else {
-        showError(context, "Failed to create account!");
-      }
-    });
+  verify() {
+    if (passwordController.text == passwordConfirmController.text) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: ((context) => SignUpTeamScreen(
+                email: emailController.text,
+                password: passwordController.text,
+                username: usernameController.text,
+                fullname: fullnameController.text,
+                teamName: teamNameController.text,
+                phoneNumber: phoneNumberController.text,
+                isMale: true,
+              )),
+        ),
+      );
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -171,6 +161,25 @@ class SignUpScreenState extends State<SignUpScreen> {
                                                 color: kPlayerCardColorPrimary),
                                           ),
                                           hintText: 'Username',
+                                          prefixIcon: Icon(Icons.person,
+                                              color: kPlayerCardColorPrimary),
+                                        ),
+                                      )),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: TextField(
+                                        controller: teamNameController,
+                                        decoration: const InputDecoration(
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: kPlayerCardColorPrimary),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: kPlayerCardColorPrimary),
+                                          ),
+                                          hintText: 'Team Name',
                                           prefixIcon: Icon(Icons.person,
                                               color: kPlayerCardColorPrimary),
                                         ),
@@ -311,7 +320,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.white),
                                       onPressed: () {
-                                        send(auth);
+                                        verify();
                                       },
                                       child: const Text(
                                         'Next',
