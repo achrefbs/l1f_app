@@ -1,5 +1,5 @@
 import 'package:fantasyapp/screens/login_screen.dart';
-import 'package:fantasyapp/screens/signup_team_screen.dart';
+import 'package:fantasyapp/screens/pages/create_team_page.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +15,6 @@ class SignUpScreenState extends State<SignUpScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
-  TextEditingController fullnameController = TextEditingController();
-  TextEditingController teamNameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
   bool obscure = true;
 
   verify() {
@@ -25,14 +22,10 @@ class SignUpScreenState extends State<SignUpScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: ((context) => SignUpTeamScreen(
+          builder: ((context) => CreateTeamView(
                 email: emailController.text,
                 password: passwordController.text,
                 username: usernameController.text,
-                fullname: fullnameController.text,
-                teamName: teamNameController.text,
-                phoneNumber: phoneNumberController.text,
-                isMale: true,
               )),
         ),
       );
@@ -118,27 +111,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                                 ),
                                 Column(children: [
                                   SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      child: TextField(
-                                        controller: fullnameController,
-                                        decoration: const InputDecoration(
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: kPlayerCardColorPrimary),
-                                          ),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: kPlayerCardColorPrimary),
-                                          ),
-                                          hintText: 'Full Name',
-                                          prefixIcon: Icon(
-                                            Icons.person,
-                                            color: kPlayerCardColorPrimary,
-                                          ),
-                                        ),
-                                      )),
-                                  SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.025,
                                   ),
@@ -191,27 +163,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                                     height: MediaQuery.of(context).size.height *
                                         0.025,
                                   ),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      child: TextField(
-                                        textInputAction: TextInputAction.next,
-                                        keyboardType: TextInputType.phone,
-                                        controller: phoneNumberController,
-                                        decoration: const InputDecoration(
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: kPlayerCardColorPrimary),
-                                          ),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: kPlayerCardColorPrimary),
-                                          ),
-                                          hintText: 'Phone Number',
-                                          prefixIcon: Icon(Icons.phone,
-                                              color: kPlayerCardColorPrimary),
-                                        ),
-                                      )),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.025,

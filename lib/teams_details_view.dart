@@ -1,4 +1,4 @@
-import 'package:fantasyapp/team.dart';
+import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/team_lab.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +36,7 @@ class TeamsDetailsViewState extends State<TeamsDetailsView> {
                         sortOwner = false;
                         sortValue = false;
                         sortPoints = false;
-                        TeamLab.get().teams.sort((TeamB a, TeamB b) {
+                        TeamLab.get().teams.sort((Squad a, Squad b) {
                           if (sortDesc) {
                             return a.name
                                 .toLowerCase()
@@ -72,7 +72,7 @@ class TeamsDetailsViewState extends State<TeamsDetailsView> {
                         sortOwner = true;
                         sortValue = false;
                         sortPoints = false;
-                        TeamLab.get().teams.sort((TeamB a, TeamB b) {
+                        TeamLab.get().teams.sort((Squad a, Squad b) {
                           if (sortDesc) {
                             return a.owner
                                 .toLowerCase()
@@ -108,7 +108,7 @@ class TeamsDetailsViewState extends State<TeamsDetailsView> {
                         sortOwner = false;
                         sortValue = true;
                         sortPoints = false;
-                        TeamLab.get().teams.sort((TeamB a, TeamB b) {
+                        TeamLab.get().teams.sort((Squad a, Squad b) {
                           if (sortDesc) {
                             return a.price.compareTo(b.price);
                           } else {
@@ -140,7 +140,7 @@ class TeamsDetailsViewState extends State<TeamsDetailsView> {
                         sortOwner = false;
                         sortValue = false;
                         sortPoints = true;
-                        TeamLab.get().teams.sort((TeamB a, TeamB b) {
+                        TeamLab.get().teams.sort((Squad a, Squad b) {
                           if (sortDesc) {
                             return a.points.compareTo(b.points);
                           } else {
@@ -167,7 +167,7 @@ class TeamsDetailsViewState extends State<TeamsDetailsView> {
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
-                TeamB team = TeamLab.get().teams[index];
+                Squad team = TeamLab.get().teams[index];
                 return InkWell(
                     onTap: () => {}
                     // Navigator.push(context,

@@ -1,6 +1,5 @@
+import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/playerB.dart';
-import 'package:fantasyapp/player_update_lab.dart';
-import 'package:fantasyapp/team.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -24,21 +23,22 @@ class InternetAsync {
             toFirestore: (player, _) => player.toJson(),
           );
   final teamsRef =
-      FirebaseFirestore.instance.collection('Teams').withConverter<TeamB>(
+      FirebaseFirestore.instance.collection('Teams').withConverter<Squad>(
             fromFirestore: (snapshot, _) {
-              return TeamB.fromJson(
+              return Squad.fromJson(
                 snapshot.data() ?? {},
               );
             },
             toFirestore: (player, _) => player.toJson(),
           );
-  updatePlayerStats(context) async {
-    PlayerUpdateLab playerUpdateLab = PlayerUpdateLab();
 
-    try {
-      await usersRef.doc("1").set(PlayerB.fromJson(playerUpdateLab.toJson()));
-    } catch (e) {}
-  }
+  // updatePlayerStats(context) async {
+  //   PlayerUpdateLab playerUpdateLab = PlayerUpdateLab();
+
+  //   try {
+  //     await usersRef.doc("1").set(PlayerB.fromJson(playerUpdateLab.toJson()));
+  //   } catch (e) {}
+  // }
 
   fetchUser(context, username, password) async {
     // UserB user = UserB.get()!;
@@ -54,10 +54,14 @@ class InternetAsync {
 
   Future updateTeam(context) async {}
 
-  Future addTeam(context, TeamB team) async {
+  Future<Squad> addTeam(context, Squad team) async {
     try {
-      await teamsRef.doc(team.owner).set(team);
-    } catch (e) {}
+      await teamsRef.add(team);
+      return team;
+    } catch (e) {
+      print(e);
+      return team;
+    }
   }
 
   addUser(context, String username, String email, String password) async {}

@@ -1,10 +1,7 @@
-// Copyright 2018 Leszek Nowaczyk. All rights reserved.
-// If you get hold of this code you probably found it on github ;)
 import 'package:fantasyapp/leaderboard_view.dart';
 import 'package:fantasyapp/players_details_view.dart';
 import 'package:fantasyapp/team_display_view.dart';
 import 'package:fantasyapp/teams_details_view.dart';
-import 'package:fantasyapp/user.dart';
 import 'package:flutter/material.dart';
 
 class NavigationDrawer extends StatefulWidget {
@@ -28,14 +25,6 @@ class NavigationDrawerState extends State<NavigationDrawer> {
           drawer: Drawer(
             child: ListView(
               children: <Widget>[
-                UserAccountsDrawerHeader(
-                    accountEmail: Text(UserB.get().username),
-                    accountName: Text(UserB.get().team.name),
-                    currentAccountPicture: const Image(
-                        image: NetworkImage(
-                            "https://union.ic.ac.uk/acc/football/fantasy/images/logo.png"),
-                        fit: BoxFit.fill),
-                    decoration: const BoxDecoration(color: Colors.blueAccent)),
                 ListTile(
                     leading: const Icon(Icons.home),
                     title: const Text("My Team"),
@@ -84,21 +73,23 @@ class NavigationDrawerState extends State<NavigationDrawer> {
                 //     }));
                 //   },
                 // ),
-                ListTile(
-                  title: const Text("Cancel"),
-                  leading: const Icon(Icons.cancel),
-                  onTap: () => Navigator.pop(context),
-                ),
-                (UserB.get().adminedTeam != 0) ? const Divider() : Container(),
-                (UserB.get().adminedTeam != 0)
-                    ? const Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          "Admin",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ))
-                    : Container(),
-                // (UserB.get()!.adminedTeam != 0)
+                // ListTile(
+                //   title: const Text("Cancel"),
+                //   leading: const Icon(Icons.cancel),
+                //   onTap: () => Navigator.pop(context),
+                // ),
+                // (Manager.get().adminedTeam != 0)
+                //     ? const Divider()
+                //     : Container(),
+                // (Manager.get().adminedTeam != 0)
+                //     ? const Padding(
+                //         padding: EdgeInsets.only(left: 10),
+                //         child: Text(
+                //           "Admin",
+                //           style: TextStyle(fontWeight: FontWeight.bold),
+                //         ))
+                //     : Container(),
+                // (Manager.get().adminedTeam != 0)
                 //     ? new ListTile(
                 //         title: new Text("Set Team Stats"),
                 //         leading: new Icon(Icons.add_box),

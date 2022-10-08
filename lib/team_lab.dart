@@ -1,8 +1,7 @@
-import 'package:fantasyapp/team.dart';
-import 'package:fantasyapp/user.dart';
+import 'package:fantasyapp/models/squad.dart';
 
 class TeamLab {
-  final List<TeamB> _teams = [];
+  final List<Squad> _teams = [];
   static TeamLab? sTeamLab;
 
   static TeamLab get() {
@@ -10,11 +9,7 @@ class TeamLab {
     return sTeamLab!;
   }
 
-  void addTeam(TeamB team) {
-    UserB user = UserB.get();
-    if (team.teamId == user.teamId) {
-      user.team = team;
-    }
+  void addTeam(Squad team) {
     sTeamLab!.teams.add(team);
   }
 
@@ -23,9 +18,9 @@ class TeamLab {
   TeamLab.fromJson(List<dynamic> json) {
     sTeamLab = TeamLab();
     for (Map<String, dynamic> teamJson in json) {
-      addTeam(TeamB.fromTeamsJson(teamJson));
+      addTeam(Squad.fromTeamsJson(teamJson));
     }
   }
 
-  List<TeamB> get teams => _teams;
+  List<Squad> get teams => _teams;
 }

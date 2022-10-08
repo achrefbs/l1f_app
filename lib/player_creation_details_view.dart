@@ -1,6 +1,6 @@
 import 'package:fantasyapp/playerB.dart';
 import 'package:fantasyapp/player_lab.dart';
-import 'package:fantasyapp/test.dart';
+import 'package:fantasyapp/screens/pages/create_team_page.dart';
 import 'package:flutter/material.dart';
 
 class PlayersCreationDetailsView extends StatefulWidget {

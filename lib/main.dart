@@ -1,7 +1,6 @@
-import 'package:fantasyapp/navigation_drawer.dart';
 import 'package:fantasyapp/providers/auth.dart';
-import 'package:fantasyapp/providers/game_state_helper.dart';
 import 'package:fantasyapp/providers/transfer_state.dart';
+import 'package:fantasyapp/screens/home_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -36,15 +35,12 @@ class MyApp extends StatelessWidget {
                   create: (_) => AuthHelper(),
                 ),
                 ChangeNotifierProvider(
-                  create: (_) => GameStateHelper(),
-                ),
-                ChangeNotifierProvider(
                   create: (_) => TransferState(),
                 ),
               ],
               child: const MaterialApp(
                 title: "ligue 1 fantasy",
-                home: NavigationDrawer(),
+                home: HomeScreen(),
               ),
             );
           }

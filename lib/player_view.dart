@@ -1,11 +1,9 @@
-// Copyright 2018 Leszek Nowaczyk. All rights reserved.
-// If you get hold of this code you probably found it on github ;)
-
+import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/playerB.dart';
 import 'package:fantasyapp/player_details_view.dart';
-import 'package:fantasyapp/team.dart';
-import 'package:fantasyapp/user.dart';
+import 'package:fantasyapp/providers/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PlayerView extends StatefulWidget {
   final Function updateState;
@@ -24,12 +22,13 @@ class PlayerView extends StatefulWidget {
 }
 
 class PlayerViewState extends State<PlayerView> {
-  late TeamB team;
+  late Squad team;
 
   @override
   void initState() {
+    AuthHelper auth = Provider.of<AuthHelper>(context, listen: false);
     super.initState();
-    team = UserB.get().team;
+    team = auth.current!.team;
   }
 
   @override

@@ -1,13 +1,12 @@
-// Copyright 2018 Leszek Nowaczyk. All rights reserved.
-// If you get hold of this code you probably found it on github ;)
-
 import 'package:fantasyapp/internet_async.dart';
+import 'package:fantasyapp/models/manager.dart';
+import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/player_lab.dart';
 import 'package:fantasyapp/player_view.dart';
+import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/sub_view.dart';
-import 'package:fantasyapp/team.dart';
-import 'package:fantasyapp/user.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TeamDisplayView extends StatefulWidget {
   const TeamDisplayView({super.key});
@@ -17,17 +16,17 @@ class TeamDisplayView extends StatefulWidget {
 }
 
 class TeamDisplayViewState extends State<TeamDisplayView> {
-  TeamB team = UserB.get().team;
-
   PlayerLab playerLab = PlayerLab.get();
-
   Widget saveChanges = const Text("Press to save changes");
 
   @override
   Widget build(BuildContext context) {
+    AuthHelper auth = Provider.of<AuthHelper>(context);
+    Manager manager = auth.current!;
+    Squad team = manager.team;
     updateState() {
       setState(() {
-        team = UserB.get().team;
+        team = manager.team;
       });
     }
 

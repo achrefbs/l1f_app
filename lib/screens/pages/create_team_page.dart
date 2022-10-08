@@ -1,16 +1,26 @@
 import 'package:fantasyapp/internet_async.dart';
+import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/playerB.dart';
 import 'package:fantasyapp/player_creation_details_view.dart';
-import 'package:fantasyapp/team.dart';
+import 'package:fantasyapp/providers/auth.dart';
+import 'package:fantasyapp/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CreateTeamView extends StatefulWidget {
   final List<PlayerB> selectedPlayers;
+  late String? username;
+  late String? email;
+  late String? password;
+  late Squad squad;
 
   CreateTeamView({
     super.key,
     players,
     selectedPlayers,
+    this.email,
+    this.password,
+    this.username,
   }) : selectedPlayers = (selectedPlayers == null)
             ? List<PlayerB>.generate(
                 16,
@@ -97,6 +107,60 @@ class CreateTeamViewState extends State<CreateTeamView> {
             child: playerView,
           )),
     );
+  }
+
+  send(AuthHelper auth) {
+    FocusScope.of(context).unfocus();
+    auth
+        .attemptSignUp(
+      username: widget.username!,
+      password: widget.password!,
+      email: widget.email!,
+      team: widget.squad,
+    )
+        .then((value) {
+      if (value == Errors.none) {
+        showInfo(context, "Account created successfully!");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+      } else if (value == Errors.weakError) {
+        showError(context, "The password provided is too weak.");
+      } else if (value == Errors.matchError) {
+        showError(context, "Passwords doesn't match");
+      } else if (value == Errors.existsError) {
+        showError(context, "The account already exists for that email.");
+      } else {
+        showError(context, "Failed to create account!");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  showError(context, error) {
+    var snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          error,
+          textAlign: TextAlign.center,
+        ));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  showInfo(context, info) {
+    var snackBar = SnackBar(
+        content: Text(
+      info,
+      textAlign: TextAlign.center,
+    ));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -249,14 +313,23 @@ class CreateTeamViewState extends State<CreateTeamView> {
                                   .showSnackBar(snackBar);
                             } else {
                               setState(() {
+                                AuthHelper auth = Provider.of<AuthHelper>(
+                                    context,
+                                    listen: false);
                                 _saveChanges = FutureBuilder(
-                                  future: InternetAsync().addTeam(
-                                      context,
-                                      TeamB.fromSelectedList(
-                                          widget.selectedPlayers,
-                                          _teamName,
-                                          "UserB.get()!.username",
-                                          _startingBudget - _budget)),
+                                  future: InternetAsync()
+                                      .addTeam(
+                                          context,
+                                          Squad.fromSelectedList(
+                                            players: widget.selectedPlayers,
+                                            name: _teamName,
+                                            owner: widget.username ?? "",
+                                            price: _startingBudget - _budget,
+                                          ))
+                                      .then((value) {
+                                    widget.squad = value;
+                                    send(auth);
+                                  }),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.done) {

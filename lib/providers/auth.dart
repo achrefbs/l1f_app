@@ -31,32 +31,28 @@ class AuthHelper with ChangeNotifier {
   get isLoggedIn => auth.currentUser != null;
 
   attemptSignUp({
-    required String email,
-    required String fullname,
-    required String password,
-    required String phonenumber,
-    required bool isMale,
     required String username,
-    required String teamName,
+    bool isSuperAdmin = false,
+    required Squad team,
+    required String email,
+    required String password,
   }) async {
     try {
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      var squad = Squad();
-      usersRef.add(
-        Manager(
-          fullname: fullname,
-          email: email,
-          firebaseID: userCredential.user!.uid,
-          phonenumber: phonenumber,
-          isMale: isMale,
-          username: username,
-          teamName: teamName,
-          currentSquad: squad,
-        ),
-      );
+      usersRef
+          .add(
+            Manager(
+              userId: userCredential.user!.uid,
+              username: username,
+              isSuperAdmin: isSuperAdmin,
+              team: team,
+              email: email,
+            ),
+          )
+          .then((value) => print(value));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return Errors.weakError;

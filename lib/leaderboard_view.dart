@@ -1,11 +1,6 @@
-/*
- * Copyright 2018 Leszek Nowaczyk. All rights reserved.
- * If you get hold of this code you probably found it on github ;)
- */
-
+import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/playerB.dart';
 import 'package:fantasyapp/player_lab.dart';
-import 'package:fantasyapp/team.dart';
 import 'package:fantasyapp/team_lab.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +12,7 @@ class LeaderboardView extends StatefulWidget {
 }
 
 class LeaderboardViewState extends State<LeaderboardView> {
-  late List<TeamB> teams, teams2;
+  late List<Squad> teams, teams2;
   late List<PlayerB> players, players2;
 
   @override
@@ -28,10 +23,10 @@ class LeaderboardViewState extends State<LeaderboardView> {
     players = PlayerLab.get().players;
     players2 = List.from(players);
 
-    teams.sort((TeamB a, TeamB b) {
+    teams.sort((Squad a, Squad b) {
       return a.points.compareTo(b.points);
     });
-    teams2.sort((TeamB a, TeamB b) {
+    teams2.sort((Squad a, Squad b) {
       return b.pointsWeek.compareTo(a.pointsWeek);
     });
 

@@ -1,29 +1,20 @@
-import 'package:fantasyapp/providers/auth.dart';
-import 'package:fantasyapp/screens/home_screen.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
+import 'package:fantasyapp/screens/pages/create_team_page.dart';
+import 'package:fantasyapp/screens/pick_team_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../vars.dart';
 
 class SignUpTeamScreen extends StatefulWidget {
-  final String email;
-  final String fullname;
-  final String password;
-  final String phoneNumber;
-  final bool isMale;
   final String username;
-  final String teamName;
+  final String email;
+  final String password;
 
   const SignUpTeamScreen({
     super.key,
+    required this.username,
     required this.email,
     required this.password,
-    required this.fullname,
-    required this.username,
-    required this.phoneNumber,
-    required this.isMale,
-    required this.teamName,
   });
 
   @override
@@ -32,64 +23,6 @@ class SignUpTeamScreen extends StatefulWidget {
 
 class SignUpTeamScreenState extends State<SignUpTeamScreen> {
   TextEditingController teamNameController = TextEditingController();
-
-  bool obscure = true;
-
-  send(AuthHelper auth) {
-    FocusScope.of(context).unfocus();
-    var res = auth.attemptSignUp(
-      teamName: teamNameController.text.trim(),
-      email: widget.email,
-      fullname: widget.fullname,
-      password: widget.password,
-      phonenumber: widget.phoneNumber,
-      isMale: widget.isMale,
-      username: widget.username,
-    );
-    res.then((value) {
-      if (value == Errors.none) {
-        showInfo(context, "Account created successfully!");
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-        );
-      } else if (value == Errors.weakError) {
-        showError(context, "The password provided is too weak.");
-      } else if (value == Errors.matchError) {
-        showError(context, "Passwords doesn't match");
-      } else if (value == Errors.existsError) {
-        showError(context, "The account already exists for that email.");
-      } else {
-        showError(context, "Failed to create account!");
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  showError(context, error) {
-    var snackBar = SnackBar(
-        backgroundColor: Colors.red,
-        content: Text(
-          error,
-          textAlign: TextAlign.center,
-        ));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  showInfo(context, info) {
-    var snackBar = SnackBar(
-        content: Text(
-      info,
-      textAlign: TextAlign.center,
-    ));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
 
   var totalPhotosCount = 0;
   var favteamclick = 0;
@@ -140,7 +73,6 @@ class SignUpTeamScreenState extends State<SignUpTeamScreen> {
           }
           return const Text('No team photos found.');
         });
-    AuthHelper auth = Provider.of<AuthHelper>(context);
 
     // final controller = GroupButtonController();
     return Scaffold(
@@ -241,7 +173,16 @@ class SignUpTeamScreenState extends State<SignUpTeamScreen> {
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.white),
                                     onPressed: () {
-                                      send(auth);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => CreateTeamView(
+                                            email: widget.email,
+                                            password: widget.password,
+                                            username: widget.username,
+                                          ),
+                                        ),
+                                      );
                                     },
                                     child: const Text(
                                       'Sign Up',
