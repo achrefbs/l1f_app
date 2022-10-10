@@ -23,10 +23,10 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
   Widget build(BuildContext context) {
     AuthHelper auth = Provider.of<AuthHelper>(context);
     Manager manager = auth.current!;
-    Squad team = manager.team;
+    Squad team = manager.squad;
     updateState() {
       setState(() {
-        team = manager.team;
+        team = manager.squad;
       });
     }
 

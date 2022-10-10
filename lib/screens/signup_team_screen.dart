@@ -1,6 +1,5 @@
 import 'package:fantasyapp/screens/login_screen.dart';
 import 'package:fantasyapp/screens/pages/create_team_page.dart';
-import 'package:fantasyapp/screens/pick_team_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../vars.dart';
@@ -176,11 +175,8 @@ class SignUpTeamScreenState extends State<SignUpTeamScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => CreateTeamView(
-                                            email: widget.email,
-                                            password: widget.password,
-                                            username: widget.username,
-                                          ),
+                                          builder: (context) =>
+                                              CreateTeamView(),
                                         ),
                                       );
                                     },

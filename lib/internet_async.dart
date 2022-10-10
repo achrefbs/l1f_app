@@ -2,6 +2,7 @@ import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/playerB.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class InternetAsync {
   final playersRef =
@@ -59,7 +60,9 @@ class InternetAsync {
       await teamsRef.add(team);
       return team;
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
       return team;
     }
   }

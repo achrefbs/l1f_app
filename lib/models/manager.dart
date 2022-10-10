@@ -4,22 +4,22 @@ class Manager {
   late String userId;
   late String username;
   late bool isSuperAdmin;
-  late Squad team;
+  late Squad squad;
   late String email;
 
   Manager({
     required this.userId,
     required this.username,
     required this.isSuperAdmin,
-    required this.team,
+    required this.squad,
     required this.email,
   });
 
   Manager.fromJson(Map<String, dynamic> json) {
-    userId = json['userId'];
+    userId = json['user_id'];
     username = json['username'];
-    isSuperAdmin = json['isSuperAdmin'];
-    team = (json['team'] != null ? Squad.fromJson(json['team']) : null)!;
+    isSuperAdmin = json['is_super_admin'];
+    squad = Squad.fromJson(json['squad']);
     email = json['email'];
   }
 
@@ -27,7 +27,7 @@ class Manager {
         'user_id': userId,
         'username': username,
         'is_super_admin': isSuperAdmin,
-        'team': team.toJson(),
+        'squad': squad.toJson(),
         'email': email,
       };
 }

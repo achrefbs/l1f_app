@@ -14,6 +14,8 @@ enum Errors {
   noUserError,
 }
 
+Squad squad = Squad.empty();
+
 class AuthHelper with ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   Manager? current;
@@ -22,7 +24,7 @@ class AuthHelper with ChangeNotifier {
       FirebaseFirestore.instance.collection('Managers').withConverter<Manager>(
             fromFirestore: (snapshot, _) {
               return Manager.fromJson(
-                snapshot.data() ?? {},
+                snapshot.data()!,
               );
             },
             toFirestore: (user, _) => user.toJson(),
@@ -30,10 +32,8 @@ class AuthHelper with ChangeNotifier {
 
   get isLoggedIn => auth.currentUser != null;
 
-  attemptSignUp({
+  Future attemptSignUp({
     required String username,
-    bool isSuperAdmin = false,
-    required Squad team,
     required String email,
     required String password,
   }) async {
@@ -42,27 +42,24 @@ class AuthHelper with ChangeNotifier {
         email: email,
         password: password,
       );
-      usersRef
-          .add(
-            Manager(
-              userId: userCredential.user!.uid,
-              username: username,
-              isSuperAdmin: isSuperAdmin,
-              team: team,
-              email: email,
-            ),
-          )
-          .then((value) => print(value));
+      usersRef.add(
+        Manager(
+          userId: userCredential.user!.uid,
+          username: username,
+          isSuperAdmin: false,
+          squad: squad,
+          email: email,
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return Errors.weakError;
       } else if (e.code == 'email-already-in-use') {
         return Errors.existsError;
+      } else {
+        return Errors.error;
       }
-    } catch (e) {
-      return Errors.error;
     }
-
     return Errors.none;
   }
 
@@ -92,11 +89,24 @@ class AuthHelper with ChangeNotifier {
     if (current == null) {
       final user = auth.currentUser;
       final manager = await usersRef
-          .where('firebaseID', isEqualTo: user!.uid)
+          .where('user_id', isEqualTo: user!.uid)
           .get()
-          .then((value) => value.docs.first.data());
+          .then((value) {
+        print(value);
+      });
+
       current = manager;
     }
     return current!;
+  }
+
+  setSquad(Squad squad) async {
+    final user = auth.currentUser;
+    await usersRef.where('user_id', isEqualTo: user!.uid).get().then((value) {
+      value.docs[0].reference.update({'squad': squad.toJson()});
+    });
+    print(
+        "squad set!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    notifyListeners();
   }
 }

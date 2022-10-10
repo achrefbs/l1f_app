@@ -1,5 +1,4 @@
 import 'package:fantasyapp/providers/auth.dart';
-import 'package:fantasyapp/providers/transfer_state.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,9 +32,6 @@ class MyApp extends StatelessWidget {
               providers: [
                 ChangeNotifierProvider(
                   create: (_) => AuthHelper(),
-                ),
-                ChangeNotifierProvider(
-                  create: (_) => TransferState(),
                 ),
               ],
               child: const MaterialApp(

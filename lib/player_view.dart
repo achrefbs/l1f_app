@@ -28,7 +28,7 @@ class PlayerViewState extends State<PlayerView> {
   void initState() {
     AuthHelper auth = Provider.of<AuthHelper>(context, listen: false);
     super.initState();
-    team = auth.current!.team;
+    team = auth.current!.squad;
   }
 
   @override

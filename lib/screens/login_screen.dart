@@ -1,5 +1,5 @@
 import 'package:fantasyapp/providers/auth.dart';
-import 'package:fantasyapp/screens/pages/matchs_page.dart';
+import 'package:fantasyapp/screens/home_screen.dart';
 import 'package:fantasyapp/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +38,7 @@ class LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const MatchScreen(),
+            builder: (context) => const HomeScreen(),
           ),
         );
       } else if (value == Errors.wrongError || value.toString().isEmpty) {
@@ -49,11 +49,6 @@ class LoginScreenState extends State<LoginScreen> {
         showError(context, "Failed to login!");
       }
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   showError(context, error) {

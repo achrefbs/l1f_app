@@ -9,18 +9,13 @@ import 'package:provider/provider.dart';
 
 class CreateTeamView extends StatefulWidget {
   final List<PlayerB> selectedPlayers;
-  late String? username;
-  late String? email;
-  late String? password;
+
   late Squad squad;
 
   CreateTeamView({
     super.key,
     players,
     selectedPlayers,
-    this.email,
-    this.password,
-    this.username,
   }) : selectedPlayers = (selectedPlayers == null)
             ? List<PlayerB>.generate(
                 16,
@@ -109,41 +104,6 @@ class CreateTeamViewState extends State<CreateTeamView> {
     );
   }
 
-  send(AuthHelper auth) {
-    FocusScope.of(context).unfocus();
-    auth
-        .attemptSignUp(
-      username: widget.username!,
-      password: widget.password!,
-      email: widget.email!,
-      team: widget.squad,
-    )
-        .then((value) {
-      if (value == Errors.none) {
-        showInfo(context, "Account created successfully!");
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-        );
-      } else if (value == Errors.weakError) {
-        showError(context, "The password provided is too weak.");
-      } else if (value == Errors.matchError) {
-        showError(context, "Passwords doesn't match");
-      } else if (value == Errors.existsError) {
-        showError(context, "The account already exists for that email.");
-      } else {
-        showError(context, "Failed to create account!");
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   showError(context, error) {
     var snackBar = SnackBar(
         backgroundColor: Colors.red,
@@ -165,190 +125,181 @@ class CreateTeamViewState extends State<CreateTeamView> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async => false,
-        child: Scaffold(
-            appBar: AppBar(
-              title: const Text("Create your team"),
-            ),
-            body: Stack(
+    AuthHelper auth = Provider.of(context);
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text("Create your team"),
+        ),
+        body: Stack(
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                        child: Stack(children: <Widget>[
-                      Positioned.fill(
-                          child: Image.asset(
-                        "assets/pitch.jpg",
-                        fit: BoxFit.fitWidth,
-                        alignment: Alignment.topLeft,
-                      ))
-                    ])),
-                  ],
-                ),
-                Column(
-                  //players
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(flex: 1, child: Container()),
-                    Expanded(
-                        flex: 6,
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.only(left: 40.0, right: 40.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children:
-                                List.generate(2, (index) => emptyPlayer(index)),
-                          ),
-                        )),
-                    Expanded(flex: 1, child: Container()),
-                    Expanded(
-                        flex: 6,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: List.generate(
-                              5, (index) => emptyPlayer(index + 2)),
-                        )),
-                    Expanded(flex: 1, child: Container()),
-                    Expanded(
-                        flex: 6,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: List.generate(
-                              5, (index) => emptyPlayer(index + 7)),
-                        )),
-                    Expanded(flex: 1, child: Container()),
-                    Expanded(
-                        flex: 6,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: List.generate(
-                              4, (index) => emptyPlayer(index + 12)),
-                        )),
-                    Expanded(flex: 1, child: Container()),
-                    Container(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                            child: Row(
-                              children: <Widget>[
-                                const Expanded(
-                                  child: Text(
-                                    "Remaining Budget",
-                                  ),
-                                ),
-                                Text(
-                                  "£${_budget}m",
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 4.0),
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                    child: TextField(
-                                  onChanged: (string) {
-                                    if (string.length >= 4) {
-                                      _teamName = string;
-                                      setState(() {
-                                        _isTeamNameLong = true;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        _isTeamNameLong = false;
-                                      });
-                                    }
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    hintText: "Team Name",
-                                  ),
-                                )),
-                                SizedBox(
-                                  height: _checkboxHeight,
-                                  child: Checkbox(
-                                    value: _isTeamNameLong,
-                                    onChanged: (b) {},
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    MaterialButton(
-                        height: 50.0,
-                        minWidth: double.infinity,
-                        splashColor: Colors.teal,
-                        textColor: Colors.white,
-                        child: _saveChanges,
-                        onPressed: () {
-                          if (_buttonEnabled) {
-                            String message = "";
-                            if (!_maxThreeSameTeam) {
-                              message +=
-                                  "You can have at most 3 players from the same team \n";
-                            }
-                            if (!_isTeamNameLong) {
-                              message +=
-                                  "Your team name must be at least 4 characters long \n";
-                            }
-                            if (_budget < 0) {
-                              message += "You can't exceed the budget \n";
-                            }
-
-                            if (message != "") {
-                              final snackBar = SnackBar(
-                                  content: Text(message),
-                                  duration: const Duration(seconds: 2));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            } else {
-                              setState(() {
-                                AuthHelper auth = Provider.of<AuthHelper>(
-                                    context,
-                                    listen: false);
-                                _saveChanges = FutureBuilder(
-                                  future: InternetAsync()
-                                      .addTeam(
-                                          context,
-                                          Squad.fromSelectedList(
-                                            players: widget.selectedPlayers,
-                                            name: _teamName,
-                                            owner: widget.username ?? "",
-                                            price: _startingBudget - _budget,
-                                          ))
-                                      .then((value) {
-                                    widget.squad = value;
-                                    send(auth);
-                                  }),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.done) {
-                                      _buttonEnabled = true;
-                                      return const Text(
-                                          "Press to save changes");
-                                    }
-                                    // By default, show a loading spinner and disable button
-                                    _buttonEnabled = false;
-                                    return const CircularProgressIndicator();
-                                  },
-                                );
-                              });
-                            }
-                          }
-                        }),
-                  ],
-                ),
+                Expanded(
+                    child: Stack(children: <Widget>[
+                  Positioned.fill(
+                      child: Image.asset(
+                    "assets/pitch.jpg",
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.topLeft,
+                  ))
+                ])),
               ],
-            )));
+            ),
+            Column(
+              //players
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Expanded(flex: 1, child: Container()),
+                Expanded(
+                    flex: 6,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children:
+                            List.generate(2, (index) => emptyPlayer(index)),
+                      ),
+                    )),
+                Expanded(flex: 1, child: Container()),
+                Expanded(
+                    flex: 6,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children:
+                          List.generate(5, (index) => emptyPlayer(index + 2)),
+                    )),
+                Expanded(flex: 1, child: Container()),
+                Expanded(
+                    flex: 6,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children:
+                          List.generate(5, (index) => emptyPlayer(index + 7)),
+                    )),
+                Expanded(flex: 1, child: Container()),
+                Expanded(
+                    flex: 6,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children:
+                          List.generate(4, (index) => emptyPlayer(index + 12)),
+                    )),
+                Expanded(flex: 1, child: Container()),
+                Container(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                        child: Row(
+                          children: <Widget>[
+                            const Expanded(
+                              child: Text(
+                                "Remaining Budget",
+                              ),
+                            ),
+                            Text(
+                              "£${_budget}m",
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                                child: TextField(
+                              onChanged: (string) {
+                                if (string.length >= 4) {
+                                  _teamName = string;
+                                  setState(() {
+                                    _isTeamNameLong = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    _isTeamNameLong = false;
+                                  });
+                                }
+                              },
+                              decoration: const InputDecoration(
+                                filled: true,
+                                hintText: "Team Name",
+                              ),
+                            )),
+                            SizedBox(
+                              height: _checkboxHeight,
+                              child: Checkbox(
+                                value: _isTeamNameLong,
+                                onChanged: (b) {},
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                MaterialButton(
+                    height: 50.0,
+                    minWidth: double.infinity,
+                    splashColor: Colors.teal,
+                    textColor: Colors.white,
+                    child: _saveChanges,
+                    onPressed: () {
+                      if (_buttonEnabled) {
+                        String message = "";
+                        if (!_maxThreeSameTeam) {
+                          message +=
+                              "You can have at most 3 players from the same team \n";
+                        }
+                        if (!_isTeamNameLong) {
+                          message +=
+                              "Your team name must be at least 4 characters long \n";
+                        }
+                        if (_budget < 0) {
+                          message += "You can't exceed the budget \n";
+                        }
+
+                        if (message != "") {
+                        } else {
+                          setState(() {
+                            AuthHelper auth =
+                                Provider.of<AuthHelper>(context, listen: false);
+                            _saveChanges = FutureBuilder(
+                              future: InternetAsync()
+                                  .addTeam(
+                                context,
+                                Squad.fromSelectedList(
+                                  players: widget.selectedPlayers,
+                                  name: _teamName,
+                                  owner: auth.current!.userId,
+                                  price: _startingBudget - _budget,
+                                ),
+                              )
+                                  .then((value) {
+                                widget.squad = value;
+                                auth.setSquad(value);
+                              }),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  _buttonEnabled = true;
+                                  return const Text("Press to save changes");
+                                }
+                                // By default, show a loading spinner and disable button
+                                _buttonEnabled = false;
+                                return const CircularProgressIndicator();
+                              },
+                            );
+                          });
+                        }
+                      }
+                    }),
+              ],
+            ),
+          ],
+        ));
   }
 }

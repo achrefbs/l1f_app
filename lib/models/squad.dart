@@ -60,31 +60,31 @@ class Squad {
 
   factory Squad.fromJson(Map<String, dynamic> json) {
     return Squad(
-        0,
+        json['teamId'],
         json['name'],
         json['owner'],
-        double.parse(json['price']),
-        int.parse(json['points']),
-        int.parse(json['points_week']),
-        int.parse(json['def_num']),
-        int.parse(json['mid_num']),
-        int.parse(json['fwd_num']),
-        int.parse(json['goal']),
-        int.parse(json['player1']),
-        int.parse(json['player2']),
-        int.parse(json['player3']),
-        int.parse(json['player4']),
-        int.parse(json['player5']),
-        int.parse(json['player6']),
-        int.parse(json['player7']),
-        int.parse(json['player8']),
-        int.parse(json['player9']),
-        int.parse(json['player10']),
-        int.parse(json['sub_goal']),
-        int.parse(json['sub1']),
-        int.parse(json['sub2']),
-        int.parse(json['sub3']),
-        int.parse(json['sub4']));
+        json['price'],
+        json['points'],
+        json['pointsWeek'],
+        json['defNum'],
+        json['midNum'],
+        json['fwdNum'],
+        json['goalId'],
+        json['player1Id'],
+        json['player2Id'],
+        json['player3Id'],
+        json['player4Id'],
+        json['player5Id'],
+        json['player6Id'],
+        json['player7Id'],
+        json['player8Id'],
+        json['player9Id'],
+        json['player10Id'],
+        json['subGoalId'],
+        json['sub1Id'],
+        json['sub2Id'],
+        json['sub3Id'],
+        json['sub4Id']);
   }
 
   //the players are from selected list are rearranged to fit the team sturcture
@@ -190,4 +190,9 @@ class Squad {
         'sub3': _players[14].playerID,
         'sub4': _players[15].playerID,
       };
+
+  static empty() {
+    return Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0);
+  }
 }

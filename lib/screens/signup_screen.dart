@@ -1,7 +1,9 @@
+import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
 import 'package:fantasyapp/screens/pages/create_team_page.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -17,18 +19,32 @@ class SignUpScreenState extends State<SignUpScreen> {
   TextEditingController passwordConfirmController = TextEditingController();
   bool obscure = true;
 
-  verify() {
+  Future<bool> send(AuthHelper auth) async {
+    FocusScope.of(context).unfocus();
+    var res = await auth.attemptSignUp(
+      username: usernameController.text,
+      email: emailController.text,
+      password: passwordController.text,
+    );
+    if (res == Errors.none) {
+      showInfo(context, "Account created successfully!");
+      return true;
+    } else if (res == Errors.weakError) {
+      showError(context, "The password provided is too weak.");
+    } else if (res == Errors.matchError) {
+      showError(context, "Passwords doesn't match");
+    } else if (res == Errors.existsError) {
+      showError(context, "The account already exists for that email.");
+    } else {
+      showError(context, "Failed to create account!");
+    }
+
+    return false;
+  }
+
+  verify(auth) async {
     if (passwordController.text == passwordConfirmController.text) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: ((context) => CreateTeamView(
-                email: emailController.text,
-                password: passwordController.text,
-                username: usernameController.text,
-              )),
-        ),
-      );
+      await send(auth);
       return true;
     } else {
       return false;
@@ -164,10 +180,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                                         0.025,
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.025,
-                                  ),
-                                  SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
                                       child: TextField(
@@ -248,7 +260,16 @@ class SignUpScreenState extends State<SignUpScreen> {
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.white),
                                       onPressed: () {
-                                        verify();
+                                        AuthHelper auth =
+                                            Provider.of<AuthHelper>(context,
+                                                listen: false);
+                                        verify(auth).then((value) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CreateTeamView()));
+                                        });
                                       },
                                       child: const Text(
                                         'Next',
