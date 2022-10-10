@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fantasyapp/models/manager.dart';
 import 'package:fantasyapp/models/squad.dart';
+import 'package:fantasyapp/playerB.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -36,30 +37,31 @@ class AuthHelper with ChangeNotifier {
     required String username,
     required String email,
     required String password,
+    required String teamName,
   }) async {
+    Manager manager;
     try {
+      squad.name = teamName;
+      squad.owner = username;
+
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      usersRef.add(
-        Manager(
-          userId: userCredential.user!.uid,
-          username: username,
-          isSuperAdmin: false,
-          squad: squad,
-          email: email,
-        ),
+      manager = Manager(
+        userId: userCredential.user!.uid,
+        username: username,
+        isSuperAdmin: false,
+        squad: squad,
+        email: email,
       );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        return Errors.weakError;
-      } else if (e.code == 'email-already-in-use') {
-        return Errors.existsError;
-      } else {
-        return Errors.error;
-      }
+      usersRef.add(
+        manager,
+      );
+    } on FirebaseAuthException catch (_) {
+      return Errors.error;
     }
+    current = manager;
     return Errors.none;
   }
 
@@ -91,22 +93,39 @@ class AuthHelper with ChangeNotifier {
       final manager = await usersRef
           .where('user_id', isEqualTo: user!.uid)
           .get()
-          .then((value) {
-        print(value);
-      });
+          .then((value) {});
 
       current = manager;
     }
     return current!;
   }
 
-  setSquad(Squad squad) async {
+  setSquad(List<PlayerB> players, double price) async {
     final user = auth.currentUser;
+    current!.squad.price = price;
+    current!.squad.emptyPlayers();
+    current!.squad.addPlayer(players[0]);
+    current!.squad.addPlayer(players[0]);
+    current!.squad.addPlayer(players[2]);
+    current!.squad.addPlayer(players[3]);
+    current!.squad.addPlayer(players[4]);
+    current!.squad.addPlayer(players[7]);
+    current!.squad.addPlayer(players[8]);
+    current!.squad.addPlayer(players[9]);
+    current!.squad.addPlayer(players[10]);
+    current!.squad.addPlayer(players[12]);
+    current!.squad.addPlayer(players[13]);
+    current!.squad.addPlayer(players[14]);
+    current!.squad.addPlayer(players[1]);
+    current!.squad.addPlayer(players[15]);
+    current!.squad.addPlayer(players[11]);
+    current!.squad.addPlayer(players[5]);
+    current!.squad.addPlayer(players[6]);
+
     await usersRef.where('user_id', isEqualTo: user!.uid).get().then((value) {
-      value.docs[0].reference.update({'squad': squad.toJson()});
-    });
-    print(
-        "squad set!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      value.docs[0].reference.update({'squad': current!.squad.toJson()});
+    }).onError((error, stackTrace) {});
+
     notifyListeners();
   }
 }

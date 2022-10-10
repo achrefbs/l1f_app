@@ -87,35 +87,39 @@ class Squad {
         json['sub4Id']);
   }
 
-  //the players are from selected list are rearranged to fit the team sturcture
-  Squad.fromSelectedList(
-      {required List<PlayerB> players,
-      required this.name,
-      required this.owner,
-      required this.price})
-      : teamId = 0,
-        points = 0,
-        pointsWeek = 0,
-        defNum = 3,
-        midNum = 4,
-        fwdNum = 3 {
-    _players.add(players[0]);
-    _players.add(players[2]);
-    _players.add(players[3]);
-    _players.add(players[4]);
-    _players.add(players[7]);
-    _players.add(players[8]);
-    _players.add(players[9]);
-    _players.add(players[10]);
-    _players.add(players[12]);
-    _players.add(players[13]);
-    _players.add(players[14]);
-    _players.add(players[1]);
-    _players.add(players[15]);
-    _players.add(players[11]);
-    _players.add(players[5]);
-    _players.add(players[6]);
+  addPlayer(PlayerB player) {
+    _players.add(player);
   }
+
+  emptyPlayers() {
+    _players.clear();
+  }
+
+  //the players are from selected list are rearranged to fit the team sturcture
+  // Squad.fromSelectedList({required List<PlayerB> players, required this.price})
+  //     : teamId = 0,
+  //       points = 0,
+  //       pointsWeek = 0,
+  //       defNum = 3,
+  //       midNum = 4,
+  //       fwdNum = 3 {
+  //   _players.add(players[0]);
+  //   _players.add(players[2]);
+  //   _players.add(players[3]);
+  //   _players.add(players[4]);
+  //   _players.add(players[7]);
+  //   _players.add(players[8]);
+  //   _players.add(players[9]);
+  //   _players.add(players[10]);
+  //   _players.add(players[12]);
+  //   _players.add(players[13]);
+  //   _players.add(players[14]);
+  //   _players.add(players[1]);
+  //   _players.add(players[15]);
+  //   _players.add(players[11]);
+  //   _players.add(players[5]);
+  //   _players.add(players[6]);
+  // }
 
   factory Squad.fromTeamsJson(Map<String, dynamic> json) {
     return Squad(

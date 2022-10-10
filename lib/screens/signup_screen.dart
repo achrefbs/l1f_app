@@ -14,6 +14,8 @@ class SignUpScreen extends StatefulWidget {
 
 class SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
+  TextEditingController teamNameController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
@@ -25,6 +27,7 @@ class SignUpScreenState extends State<SignUpScreen> {
       username: usernameController.text,
       email: emailController.text,
       password: passwordController.text,
+      teamName: teamNameController.text,
     );
     if (res == Errors.none) {
       showInfo(context, "Account created successfully!");
@@ -146,6 +149,31 @@ class SignUpScreenState extends State<SignUpScreen> {
                                           ),
                                           hintText: 'Username',
                                           prefixIcon: Icon(Icons.person,
+                                              color: kPlayerCardColorPrimary),
+                                        ),
+                                      )),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.025,
+                                  ),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: TextField(
+                                        textInputAction: TextInputAction.next,
+                                        keyboardType: TextInputType.name,
+                                        controller: teamNameController,
+                                        decoration: const InputDecoration(
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: kPlayerCardColorPrimary),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: kPlayerCardColorPrimary),
+                                          ),
+                                          hintText: 'Team name',
+                                          prefixIcon: Icon(Icons.people,
                                               color: kPlayerCardColorPrimary),
                                         ),
                                       )),

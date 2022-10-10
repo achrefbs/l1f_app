@@ -47,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
               FutureBuilder(
                 future: currentManager,
                 builder: (context, snapshot) {
-                  print(snapshot.error);
                   if (snapshot.hasError) {
                     return const Center(
                       child: Text("something went wrong!"),

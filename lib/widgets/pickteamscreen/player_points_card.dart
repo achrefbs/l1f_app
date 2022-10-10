@@ -1,9 +1,9 @@
-import 'package:fantasyapp/models/player.dart';
+import 'package:fantasyapp/playerB.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:flutter/material.dart';
 
 class PlayerPointsCard extends StatelessWidget {
-  final Player player;
+  final PlayerB player;
   const PlayerPointsCard({
     Key? key,
     required this.player,
@@ -15,12 +15,12 @@ class PlayerPointsCard extends StatelessWidget {
       children: [
         Column(
           children: [
-            const Image(
-              image: AssetImage("player.shirt"),
+            Image(
+              image: AssetImage(player.image),
               height: kPlayerCardShirtHeight,
             ),
             Container(
-              width: kPlayerCardWidth,
+              width: MediaQuery.of(context).size.width / 6,
               height: kPlayerCardHeight,
               decoration: const BoxDecoration(
                 color: kPlayerCardColorPrimary,
@@ -30,7 +30,7 @@ class PlayerPointsCard extends StatelessWidget {
                 ),
               ),
               child: Text(
-                player.name,
+                "${player.firstName.substring(0, 1)}. ${player.lastName}",
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -40,17 +40,17 @@ class PlayerPointsCard extends StatelessWidget {
               ),
             ),
             Container(
-              width: kPlayerCardWidth,
+              width: MediaQuery.of(context).size.width / 6,
               height: kPlayerCardHeight,
               decoration: const BoxDecoration(
                   color: kPlayerCardColorSecondary,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(6),
                       bottomRight: Radius.circular(6))),
-              child: const Text(
-                "player.nextMatch",
+              child: Text(
+                "£${player.price}m",
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: kPlayerCardTextColorSecondary,
                   fontSize: kPlayerCardFontSize,
                 ),
