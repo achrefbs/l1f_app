@@ -2,7 +2,6 @@ import 'package:fantasyapp/models/manager.dart';
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
 import 'package:fantasyapp/screens/pages/home_page.dart';
-import 'package:fantasyapp/screens/pick_team_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -104,11 +103,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onTap(int index) {
     if (index == 2) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: ((context) => const PickTeamScreen()),
-        ),
-      );
+      // Navigator.of(context).pushReplacement(
+      //   MaterialPageRoute(
+      //     builder: ((context) => const PickTeamScreen()),
+      //   ),
+      // );
     } else {
       setState(() {
         selectedIndex = index;

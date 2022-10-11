@@ -1,8 +1,8 @@
-import 'package:fantasyapp/playerB.dart';
+import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/player_lab.dart';
 
 class Squad {
-  int teamId;
+  int squadID;
   String name;
   String owner;
   double price;
@@ -11,10 +11,10 @@ class Squad {
   int defNum;
   int midNum;
   int fwdNum;
-  final List<PlayerB> _players = [];
+  final List<Player> players = [];
 
   Squad(
-      this.teamId,
+      this.squadID,
       this.name,
       this.owner,
       this.price,
@@ -40,27 +40,27 @@ class Squad {
       int sub3Id,
       int sub4Id) {
     PlayerLab playerLab = PlayerLab.get();
-    _players.add(playerLab.getPlayer(goalId));
-    _players.add(playerLab.getPlayer(player1Id));
-    _players.add(playerLab.getPlayer(player2Id));
-    _players.add(playerLab.getPlayer(player3Id));
-    _players.add(playerLab.getPlayer(player4Id));
-    _players.add(playerLab.getPlayer(player5Id));
-    _players.add(playerLab.getPlayer(player6Id));
-    _players.add(playerLab.getPlayer(player7Id));
-    _players.add(playerLab.getPlayer(player8Id));
-    _players.add(playerLab.getPlayer(player9Id));
-    _players.add(playerLab.getPlayer(player10Id));
-    _players.add(playerLab.getPlayer(subGoalId));
-    _players.add(playerLab.getPlayer(sub1Id));
-    _players.add(playerLab.getPlayer(sub2Id));
-    _players.add(playerLab.getPlayer(sub3Id));
-    _players.add(playerLab.getPlayer(sub4Id));
+    players.add(playerLab.getPlayer(goalId));
+    players.add(playerLab.getPlayer(player1Id));
+    players.add(playerLab.getPlayer(player2Id));
+    players.add(playerLab.getPlayer(player3Id));
+    players.add(playerLab.getPlayer(player4Id));
+    players.add(playerLab.getPlayer(player5Id));
+    players.add(playerLab.getPlayer(player6Id));
+    players.add(playerLab.getPlayer(player7Id));
+    players.add(playerLab.getPlayer(player8Id));
+    players.add(playerLab.getPlayer(player9Id));
+    players.add(playerLab.getPlayer(player10Id));
+    players.add(playerLab.getPlayer(subGoalId));
+    players.add(playerLab.getPlayer(sub1Id));
+    players.add(playerLab.getPlayer(sub2Id));
+    players.add(playerLab.getPlayer(sub3Id));
+    players.add(playerLab.getPlayer(sub4Id));
   }
 
   factory Squad.fromJson(Map<String, dynamic> json) {
     return Squad(
-        json['teamId'],
+        json['squadID'],
         json['name'],
         json['owner'],
         json['price'],
@@ -87,12 +87,12 @@ class Squad {
         json['sub4Id']);
   }
 
-  addPlayer(PlayerB player) {
-    _players.add(player);
+  addPlayer(Player player) {
+    players.add(player);
   }
 
   emptyPlayers() {
-    _players.clear();
+    players.clear();
   }
 
   //the players are from selected list are rearranged to fit the team sturcture
@@ -150,25 +150,23 @@ class Squad {
         int.parse(json['sub4']));
   }
 
-  String playerAt(int index) => players[index]!.playerID.toString();
-
-  List<PlayerB?> get players => _players;
+  String playerAt(int index) => players[index].playerID.toString();
 
   shiftPlayersAndInsert(delIndex, insertIndex, player) {
-    _players.removeAt(delIndex);
-    _players.insert(insertIndex, player);
+    players.removeAt(delIndex);
+    players.insert(insertIndex, player);
   }
 
   int getCurrentWeeklyPoints() {
     int currentWeeklyPoints = 0;
-    for (PlayerB? player in players) {
+    for (Player? player in players) {
       currentWeeklyPoints += player!.pointsWeek;
     }
     return currentWeeklyPoints;
   }
 
   Map<String, dynamic> toJson() => {
-        'team_id': teamId,
+        'squadID': squadID,
         'name': name,
         'owner': owner,
         'price': price,
@@ -177,22 +175,22 @@ class Squad {
         'def_num': defNum,
         'mid_num': midNum,
         'fwd_num': fwdNum,
-        'goal': _players[0].playerID,
-        'player1': _players[1].playerID,
-        'player2': _players[2].playerID,
-        'player3': _players[3].playerID,
-        'player4': _players[4].playerID,
-        'player5': _players[5].playerID,
-        'player6': _players[6].playerID,
-        'player7': _players[7].playerID,
-        'player8': _players[8].playerID,
-        'player9': _players[9].playerID,
-        'player10': _players[10].playerID,
-        'sub_goal': _players[11].playerID,
-        'sub1': _players[12].playerID,
-        'sub2': _players[13].playerID,
-        'sub3': _players[14].playerID,
-        'sub4': _players[15].playerID,
+        'goal': players[0].playerID,
+        'player1': players[1].playerID,
+        'player2': players[2].playerID,
+        'player3': players[3].playerID,
+        'player4': players[4].playerID,
+        'player5': players[5].playerID,
+        'player6': players[6].playerID,
+        'player7': players[7].playerID,
+        'player8': players[8].playerID,
+        'player9': players[9].playerID,
+        'player10': players[10].playerID,
+        'sub_goal': players[11].playerID,
+        'sub1': players[12].playerID,
+        'sub2': players[13].playerID,
+        'sub3': players[14].playerID,
+        'sub4': players[15].playerID,
       };
 
   static empty() {

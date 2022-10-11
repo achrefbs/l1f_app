@@ -1,13 +1,8 @@
-/*
- * Copyright 2018 Leszek Nowaczyk. All rights reserved.
- * If you get hold of this code you probably found it on github ;)
- */
-
-import 'package:fantasyapp/playerB.dart';
+import 'package:fantasyapp/models/player.dart';
 import 'package:flutter/material.dart';
 
 class PlayerDetailsView extends StatelessWidget {
-  final PlayerB _p;
+  final Player _p;
 
   const PlayerDetailsView(this._p, {super.key});
 

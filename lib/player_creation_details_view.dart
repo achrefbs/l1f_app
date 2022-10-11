@@ -1,10 +1,10 @@
-import 'package:fantasyapp/playerB.dart';
+import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/player_lab.dart';
 import 'package:fantasyapp/screens/pages/create_team_page.dart';
 import 'package:flutter/material.dart';
 
 class PlayersCreationDetailsView extends StatefulWidget {
-  final List<PlayerB> selectedPlayers;
+  final List<Player> selectedPlayers;
   final int playerIndex;
 
   const PlayersCreationDetailsView(
@@ -22,11 +22,11 @@ class PlayersCreationDetailsViewState
   final double _columnWidth = 40.0;
   final double _columnNameWidth = 60.0;
   late PlayersDataSource _playersDataSource;
-  late List<PlayerB> _players;
+  late List<Player> _players;
 
   int? _rowsPerPage = 20;
 
-  void _sort<T>(Comparable<T> Function(PlayerB p) getField, int columnIndex,
+  void _sort<T>(Comparable<T> Function(Player p) getField, int columnIndex,
       bool ascending) {
     _playersDataSource._sort<T>(getField, ascending);
     setState(() {
@@ -37,23 +37,23 @@ class PlayersCreationDetailsViewState
 
   @override
   void initState() {
-    List<PlayerB> players = PlayerLab.get().players;
+    List<Player> players = PlayerLab.get().players;
     //filter out players by position
     if (widget.playerIndex < 2) {
-      _players = List<PlayerB>.from(
-          players.where((player) => player.position == "GK"));
+      _players =
+          List<Player>.from(players.where((player) => player.position == "GK"));
     } else if (widget.playerIndex < 7) {
-      _players = List<PlayerB>.from(
+      _players = List<Player>.from(
           players.where((player) => player.position == "DEF"));
     } else if (widget.playerIndex < 12) {
-      _players = List<PlayerB>.from(
+      _players = List<Player>.from(
           players.where((player) => player.position == "MID"));
     } else {
-      _players = List<PlayerB>.from(
+      _players = List<Player>.from(
           players.where((player) => player.position == "FWD"));
     }
     //filter out players who are already selected
-    for (PlayerB player in widget.selectedPlayers) {
+    for (Player player in widget.selectedPlayers) {
       _players.remove(player);
     }
     _playersDataSource = PlayersDataSource(
@@ -91,7 +91,7 @@ class PlayersCreationDetailsViewState
                         )),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<String>(
-                        (PlayerB p) => p.firstName, columnIndex, ascending)),
+                        (Player p) => p.firstName, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnNameWidth,
@@ -101,57 +101,49 @@ class PlayersCreationDetailsViewState
                         )),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<String>(
-                        (PlayerB p) => p.lastName, columnIndex, ascending)),
+                        (Player p) => p.lastName, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Position")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<String>(
-                        (PlayerB p) => p.position, columnIndex, ascending)),
+                        (Player p) => p.position, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Price")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.price, columnIndex, ascending)),
-                DataColumn(
-                    label: SizedBox(
-                        width: _columnWidth, child: const Text("Fresher")),
-                    numeric: true,
-                    onSort: (int columnIndex, bool ascending) => _sort<String>(
-                        (PlayerB p) => p.isFresher.toString(),
-                        columnIndex,
-                        ascending)),
+                        (Player p) => p.price, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Team")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.team, columnIndex, ascending)),
+                        (Player p) => p.team, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Points")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.points, columnIndex, ascending)),
+                        (Player p) => p.points, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Week Points")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.pointsWeek, columnIndex, ascending)),
+                        (Player p) => p.pointsWeek, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Apps")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.appearances, columnIndex, ascending)),
+                        (Player p) => p.appearances, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Sub Apps")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.subAppearances,
+                        (Player p) => p.subAppearances,
                         columnIndex,
                         ascending)),
                 DataColumn(
@@ -159,43 +151,43 @@ class PlayersCreationDetailsViewState
                         width: _columnWidth, child: const Text("Goals")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.goals, columnIndex, ascending)),
+                        (Player p) => p.goals, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Assists")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.assists, columnIndex, ascending)),
+                        (Player p) => p.assists, columnIndex, ascending)),
                 DataColumn(
                     label:
                         SizedBox(width: _columnWidth, child: const Text("CSs")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.cleanSheets, columnIndex, ascending)),
+                        (Player p) => p.cleanSheets, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("MOTMs")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.motms, columnIndex, ascending)),
+                        (Player p) => p.motms, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Yellows")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.yellowCards, columnIndex, ascending)),
+                        (Player p) => p.yellowCards, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Reds")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.redCards, columnIndex, ascending)),
+                        (Player p) => p.redCards, columnIndex, ascending)),
                 DataColumn(
                     label: SizedBox(
                         width: _columnWidth, child: const Text("Own Goals")),
                     numeric: true,
                     onSort: (int columnIndex, bool ascending) => _sort<num>(
-                        (PlayerB p) => p.ownGoals, columnIndex, ascending)),
+                        (Player p) => p.ownGoals, columnIndex, ascending)),
               ],
               source: _playersDataSource,
             )
@@ -209,18 +201,18 @@ class PlayersDataSource extends DataTableSource {
       this._playerIndex, this._selectedPlayers, this._players, this.context);
 
   final int _playerIndex;
-  final List<PlayerB> _players;
-  final List<PlayerB> _selectedPlayers;
+  final List<Player> _players;
+  final List<Player> _selectedPlayers;
 
   final int _selectedCount = 0;
   BuildContext context;
   final double _columnWidth = 40.0;
   final double _columnNameWidth = 60.0;
 
-  void _sort<T>(Comparable<T> Function(PlayerB p) getField, bool ascending) {
-    _players.sort((PlayerB a, PlayerB b) {
+  void _sort<T>(Comparable<T> Function(Player p) getField, bool ascending) {
+    _players.sort((Player a, Player b) {
       if (!ascending) {
-        final PlayerB c = a;
+        final Player c = a;
         a = b;
         b = c;
       }
@@ -264,7 +256,7 @@ class PlayersDataSource extends DataTableSource {
   DataRow getRow(int index) {
     assert(index >= 0);
     if (index >= _players.length) return const DataRow(cells: []);
-    final PlayerB player = _players[index];
+    final Player player = _players[index];
     return DataRow.byIndex(
         onSelectChanged: (b) {
           _players.removeAt(index);
@@ -279,11 +271,10 @@ class PlayersDataSource extends DataTableSource {
         },
         index: index,
         cells: <DataCell>[
-          getNameCell(player.firstName, player.isFresher),
-          getNameCell(player.lastName, player.isFresher),
+          getNameCell(player.firstName, false),
+          getNameCell(player.lastName, false),
           getCell(player.position),
           getCell('${player.price}'),
-          getCell('${player.isFresher}'),
           getCell('${player.team}'),
           getCell('${player.points}'),
           getCell('${player.pointsWeek}'),

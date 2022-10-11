@@ -1,5 +1,5 @@
+import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/models/squad.dart';
-import 'package:fantasyapp/playerB.dart';
 import 'package:fantasyapp/player_lab.dart';
 import 'package:fantasyapp/team_lab.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ class LeaderboardView extends StatefulWidget {
 
 class LeaderboardViewState extends State<LeaderboardView> {
   late List<Squad> teams, teams2;
-  late List<PlayerB> players, players2;
+  late List<Player> players, players2;
 
   @override
   void initState() {
@@ -30,10 +30,10 @@ class LeaderboardViewState extends State<LeaderboardView> {
       return b.pointsWeek.compareTo(a.pointsWeek);
     });
 
-    players.sort((PlayerB a, PlayerB b) {
+    players.sort((Player a, Player b) {
       return a.points.compareTo(b.points);
     });
-    players2.sort((PlayerB a, PlayerB b) {
+    players2.sort((Player a, Player b) {
       return b.pointsWeek.compareTo(a.pointsWeek);
     });
   }

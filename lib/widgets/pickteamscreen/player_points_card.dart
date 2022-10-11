@@ -1,9 +1,9 @@
-import 'package:fantasyapp/playerB.dart';
+import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:flutter/material.dart';
 
 class PlayerPointsCard extends StatelessWidget {
-  final PlayerB player;
+  final Player player;
   const PlayerPointsCard({
     Key? key,
     required this.player,

@@ -1,4 +1,4 @@
-import 'package:fantasyapp/playerB.dart';
+import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/player_details_view.dart';
 import 'package:fantasyapp/player_lab.dart';
 import 'package:flutter/material.dart';
@@ -173,7 +173,7 @@ class PlayersDataSource extends DataTableSource {
   void _sort<T>(Comparable<T> getField(p), bool ascending) {
     _players.sort((a, b) {
       if (!ascending) {
-        final PlayerB c = a;
+        final Player c = a;
         a = b;
         b = c;
       }
@@ -190,13 +190,13 @@ class PlayersDataSource extends DataTableSource {
     _context = value;
   }
 
-  final List<PlayerB> _players = PlayerLab.get().players;
+  final List<Player> _players = PlayerLab.get().players;
 
   final int _selectedCount = 0;
   final double _columnWidth = 40.0;
   final double _columnNameWidth = 60.0;
 
-  DataCell getCell(String text, PlayerB player) {
+  DataCell getCell(String text, Player player) {
     return DataCell(
         SizedBox(
             width: _columnWidth,
@@ -212,7 +212,7 @@ class PlayersDataSource extends DataTableSource {
     });
   }
 
-  DataCell getNameCell(String text, PlayerB player) {
+  DataCell getNameCell(String text, Player player) {
     return DataCell(
         SizedBox(
             width: _columnNameWidth,
@@ -232,7 +232,7 @@ class PlayersDataSource extends DataTableSource {
   DataRow getRow(int index) {
     assert(index >= 0);
     if (index >= _players.length) return const DataRow(cells: []);
-    final PlayerB player = _players[index];
+    final Player player = _players[index];
     return DataRow.byIndex(index: index, cells: <DataCell>[
       getNameCell(player.firstName, player),
       getNameCell(player.lastName, player),
@@ -250,7 +250,6 @@ class PlayersDataSource extends DataTableSource {
       getCell('${player.yellowCards}', player),
       getCell('${player.redCards}', player),
       getCell('${player.ownGoals}', player),
-      getCell('${player.isFresher}', player),
     ]);
   }
 

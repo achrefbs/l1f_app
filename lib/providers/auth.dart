@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fantasyapp/models/manager.dart';
+import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/models/squad.dart';
-import 'package:fantasyapp/playerB.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -100,7 +100,7 @@ class AuthHelper with ChangeNotifier {
     return current!;
   }
 
-  setSquad(List<PlayerB> players, double price) async {
+  setSquad(List<Player> players, double price) async {
     final user = auth.currentUser;
     current!.squad.price = price;
     current!.squad.emptyPlayers();
