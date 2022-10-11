@@ -1,8 +1,6 @@
 import 'package:fantasyapp/models/manager.dart';
 import 'package:fantasyapp/models/squad.dart';
-import 'package:fantasyapp/player_view.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
-import 'package:fantasyapp/sub_view.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:fantasyapp/widgets/header.dart';
 import 'package:fantasyapp/widgets/pickteamscreen/player_points_card.dart';
@@ -112,7 +110,7 @@ class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
                       ),
                       child: Column(
                         children: [
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: List.generate(
@@ -152,7 +150,7 @@ class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
                                               1],
                                     )),
                           ),
-                          Expanded(child: Container(), flex: 1),
+                          Expanded(flex: 1, child: Container()),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: List.generate(
@@ -162,7 +160,7 @@ class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
                                           .manager.squad.players[11 + index],
                                     )),
                           ),
-                          SizedBox(height: 50),
+                          const SizedBox(height: 50),
                         ],
                       ),
                     ),
