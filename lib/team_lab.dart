@@ -18,7 +18,7 @@ class TeamLab {
   TeamLab.fromJson(List<dynamic> json) {
     sTeamLab = TeamLab();
     for (Map<String, dynamic> teamJson in json) {
-      addTeam(Squad.fromTeamsJson(teamJson));
+      addTeam(Squad.fromJson(teamJson));
     }
   }
 

@@ -1,7 +1,11 @@
 import 'package:fantasyapp/models/manager.dart';
+import 'package:fantasyapp/models/squad.dart';
+import 'package:fantasyapp/player_view.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
+import 'package:fantasyapp/sub_view.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:fantasyapp/widgets/header.dart';
+import 'package:fantasyapp/widgets/pickteamscreen/player_points_card.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -16,23 +20,13 @@ class TeamHistoryScreen extends StatefulWidget {
 class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
   int index = 0;
 
-  Map<int, Map<String, dynamic>> squadHistoryE = {
-    0: {
-      "gk": "0",
-      "def": ["0", "0", "0"],
-      "mid": ["0", "0", "0", "0"],
-      "att": ["0", "0", "0"],
-      "subs": ["0", "0", "0"],
-      "captain": "0",
-    },
-    1: {
-      "gk": "0",
-      "def": ["0", "0", "0"],
-      "mid": ["0", "0", "0", "0"],
-      "att": ["0", "0", "0"],
-      "subs": ["0", "0", "0"],
-      "captain": "0",
-    }
+  Map<int, Squad> squadHistoryE = {
+    0: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0),
+    1: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0),
+    2: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0),
   };
 
   @override
@@ -117,7 +111,59 @@ class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
                         ),
                       ),
                       child: Column(
-                        children: const [],
+                        children: [
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(
+                                1,
+                                (index) => PlayerPointsCard(
+                                      player: widget.manager.squad.players[0],
+                                    )),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(
+                                widget.manager.squad.defNum,
+                                (index) => PlayerPointsCard(
+                                      player: widget
+                                          .manager.squad.players[index + 1],
+                                    )),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(
+                              widget.manager.squad.midNum,
+                              (index) => PlayerPointsCard(
+                                player: widget.manager.squad.players[
+                                    index + widget.manager.squad.defNum + 1],
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(
+                                widget.manager.squad.fwdNum,
+                                (index) => PlayerPointsCard(
+                                      player: widget.manager.squad.players[
+                                          index +
+                                              widget.manager.squad.defNum +
+                                              widget.manager.squad.midNum +
+                                              1],
+                                    )),
+                          ),
+                          Expanded(child: Container(), flex: 1),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(
+                                4,
+                                (index) => PlayerPointsCard(
+                                      player: widget
+                                          .manager.squad.players[11 + index],
+                                    )),
+                          ),
+                          SizedBox(height: 50),
+                        ],
                       ),
                     ),
                     Positioned(

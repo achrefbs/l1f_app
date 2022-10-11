@@ -14,31 +14,31 @@ class Squad {
   final List<Player> players = [];
 
   Squad(
-      this.squadID,
-      this.name,
-      this.owner,
-      this.price,
-      this.points,
-      this.pointsWeek,
-      this.defNum,
-      this.midNum,
-      this.fwdNum,
-      int goalId,
-      int player1Id,
-      int player2Id,
-      int player3Id,
-      int player4Id,
-      int player5Id,
-      int player6Id,
-      int player7Id,
-      int player8Id,
-      int player9Id,
-      int player10Id,
-      int subGoalId,
-      int sub1Id,
-      int sub2Id,
-      int sub3Id,
-      int sub4Id) {
+    this.squadID,
+    this.name,
+    this.owner,
+    this.price,
+    this.points,
+    this.pointsWeek,
+    this.defNum,
+    this.midNum,
+    this.fwdNum,
+    int goalId,
+    int player1Id,
+    int player2Id,
+    int player3Id,
+    int player4Id,
+    int player5Id,
+    int player6Id,
+    int player7Id,
+    int player8Id,
+    int player9Id,
+    int player10Id,
+    int subGoalId,
+    int sub1Id,
+    int sub2Id,
+    int sub3Id,
+  ) {
     PlayerLab playerLab = PlayerLab.get();
     players.add(playerLab.getPlayer(goalId));
     players.add(playerLab.getPlayer(player1Id));
@@ -55,7 +55,6 @@ class Squad {
     players.add(playerLab.getPlayer(sub1Id));
     players.add(playerLab.getPlayer(sub2Id));
     players.add(playerLab.getPlayer(sub3Id));
-    players.add(playerLab.getPlayer(sub4Id));
   }
 
   factory Squad.fromJson(Map<String, dynamic> json) {
@@ -65,26 +64,25 @@ class Squad {
         json['owner'],
         json['price'],
         json['points'],
-        json['pointsWeek'],
-        json['defNum'],
-        json['midNum'],
-        json['fwdNum'],
-        json['goalId'],
-        json['player1Id'],
-        json['player2Id'],
-        json['player3Id'],
-        json['player4Id'],
-        json['player5Id'],
-        json['player6Id'],
-        json['player7Id'],
-        json['player8Id'],
-        json['player9Id'],
-        json['player10Id'],
-        json['subGoalId'],
-        json['sub1Id'],
-        json['sub2Id'],
-        json['sub3Id'],
-        json['sub4Id']);
+        json['points_week'],
+        json['def_num'],
+        json['mid_num'],
+        json['fwd_num'],
+        json['goal'],
+        json['player1'],
+        json['player2'],
+        json['player3'],
+        json['player4'],
+        json['player5'],
+        json['player6'],
+        json['player7'],
+        json['player8'],
+        json['player9'],
+        json['player10'],
+        json['sub_goal'],
+        json['sub1'],
+        json['sub2'],
+        json['sub3']);
   }
 
   addPlayer(Player player) {
@@ -121,34 +119,34 @@ class Squad {
   //   _players.add(players[6]);
   // }
 
-  factory Squad.fromTeamsJson(Map<String, dynamic> json) {
-    return Squad(
-        int.parse(json['team_id']),
-        json['name'],
-        json['owner'],
-        double.parse(json['price']),
-        int.parse(json['points']),
-        int.parse(json['points_week']),
-        int.parse(json['def_num']),
-        int.parse(json['mid_num']),
-        int.parse(json['fwd_num']),
-        int.parse(json['goal']),
-        int.parse(json['player1']),
-        int.parse(json['player2']),
-        int.parse(json['player3']),
-        int.parse(json['player4']),
-        int.parse(json['player5']),
-        int.parse(json['player6']),
-        int.parse(json['player7']),
-        int.parse(json['player8']),
-        int.parse(json['player9']),
-        int.parse(json['player10']),
-        int.parse(json['sub_goal']),
-        int.parse(json['sub1']),
-        int.parse(json['sub2']),
-        int.parse(json['sub3']),
-        int.parse(json['sub4']));
-  }
+  // factory Squad.fromTeamsJson(Map<String, dynamic> json) {
+  //   return Squad(
+  //       int.parse(json['team_id']),
+  //       json['name'],
+  //       json['owner'],
+  //       double.parse(json['price']),
+  //       int.parse(json['points']),
+  //       int.parse(json['points_week']),
+  //       int.parse(json['def_num']),
+  //       int.parse(json['mid_num']),
+  //       int.parse(json['fwd_num']),
+  //       int.parse(json['goal']),
+  //       int.parse(json['player1']),
+  //       int.parse(json['player2']),
+  //       int.parse(json['player3']),
+  //       int.parse(json['player4']),
+  //       int.parse(json['player5']),
+  //       int.parse(json['player6']),
+  //       int.parse(json['player7']),
+  //       int.parse(json['player8']),
+  //       int.parse(json['player9']),
+  //       int.parse(json['player10']),
+  //       int.parse(json['sub_goal']),
+  //       int.parse(json['sub1']),
+  //       int.parse(json['sub2']),
+  //       int.parse(json['sub3']),
+  //       int.parse(json['sub4']));
+  // }
 
   String playerAt(int index) => players[index].playerID.toString();
 
@@ -190,11 +188,10 @@ class Squad {
         'sub1': players[12].playerID,
         'sub2': players[13].playerID,
         'sub3': players[14].playerID,
-        'sub4': players[15].playerID,
       };
 
   static empty() {
     return Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0);
+        0, 0, 0, 0, 0, 0, 0);
   }
 }
