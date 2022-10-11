@@ -1,4 +1,4 @@
-import 'package:fantasyapp/MatchCardWidget.dart';
+import 'package:fantasyapp/widgets/MatchCardWidget.dart';
 import 'package:flutter/material.dart';
 
 import '../../vars.dart';

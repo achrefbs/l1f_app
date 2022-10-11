@@ -1,6 +1,6 @@
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
-import 'package:fantasyapp/screens/pages/matchs.dart';
+import 'package:fantasyapp/screens/pages/matchs_page.dart';
 import 'package:fantasyapp/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
