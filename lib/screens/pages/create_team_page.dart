@@ -1,5 +1,4 @@
 import 'package:fantasyapp/models/player.dart';
-import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/player_creation_details_view.dart';
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
@@ -11,8 +10,6 @@ import 'package:provider/provider.dart';
 
 class CreateTeamView extends StatefulWidget {
   final List<Player> selectedPlayers;
-
-  late Squad squad;
 
   CreateTeamView({
     super.key,
@@ -52,16 +49,7 @@ class CreateTeamViewState extends State<CreateTeamView> {
   emptyPlayer(int index) {
     Player player = widget.selectedPlayers[index];
     Widget playerView;
-
-    if (player == null) {
-      playerView = Image.asset(
-        "assets/shirt_blank.png",
-        fit: BoxFit.fitHeight,
-      );
-    } else {
-      playerView = PlayerPointsCard(player: player);
-    }
-
+    playerView = PlayerPointsCard(player: player);
     return InkWell(
         onTap: () => Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (BuildContext context) {

@@ -90,12 +90,9 @@ class AuthHelper with ChangeNotifier {
   Future<Manager> getCurrentManager() async {
     if (current == null) {
       final user = auth.currentUser;
-      final manager = await usersRef
-          .where('user_id', isEqualTo: user!.uid)
-          .get()
-          .then((value) {});
-
-      current = manager;
+      await usersRef.where('user_id', isEqualTo: user!.uid).get().then((value) {
+        current = value.docs.first.data();
+      });
     }
     return current!;
   }

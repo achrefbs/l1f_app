@@ -17,8 +17,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _items = [
     const HomePage(),
-    const TeamsDetailsView(),
-    const TeamDisplayView(),
+    const SizedBox(height: 600, child: TeamsDetailsView()),
+    const SizedBox(height: 600, child: TeamDisplayView()),
     //const FantasyPage(),
   ];
   int selectedIndex = 0;

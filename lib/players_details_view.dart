@@ -19,6 +19,7 @@ class PlayersDetailsViewState extends State<PlayersDetailsView> {
   final PlayersDataSource _playersDataSource = PlayersDataSource();
   int _rowsPerPage = 20;
 
+  // ignore: use_function_type_syntax_for_parameters
   void _sort<T>(Comparable<T> getField(p), int columnIndex, bool ascending) {
     _playersDataSource._sort<T>(getField, ascending);
     setState(() {
@@ -170,6 +171,7 @@ class PlayersDetailsViewState extends State<PlayersDetailsView> {
 class PlayersDataSource extends DataTableSource {
   late BuildContext _context;
 
+  // ignore: use_function_type_syntax_for_parameters
   void _sort<T>(Comparable<T> getField(p), bool ascending) {
     _players.sort((a, b) {
       if (!ascending) {
