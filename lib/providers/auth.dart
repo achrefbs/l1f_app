@@ -13,6 +13,7 @@ enum Errors {
   error,
   wrongError,
   noUserError,
+  confirmMatchError,
 }
 
 Squad squad = Squad.empty();
@@ -38,12 +39,14 @@ class AuthHelper with ChangeNotifier {
     required String email,
     required String password,
     required String teamName,
+    required String confirm
   }) async {
     Manager manager;
+    if (password == confirm) {
     try {
       squad.name = teamName;
       squad.owner = username;
-
+      
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -64,7 +67,10 @@ class AuthHelper with ChangeNotifier {
     current = manager;
     return Errors.none;
   }
-
+  else {
+    return  Errors.confirmMatchError;
+  }
+}
   attemptLogin(email, password) async {
     try {
       await auth.signInWithEmailAndPassword(
@@ -125,4 +131,12 @@ class AuthHelper with ChangeNotifier {
 
     notifyListeners();
   }
+
+////// length of favorites
+CollectionReference manager = FirebaseFirestore.instance.collection('manager');
+ bool checkavailability ()  {
+   var list = manager.doc().get();
+   print(list);
+return false;
+}
 }

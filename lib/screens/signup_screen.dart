@@ -39,19 +39,20 @@ class SignUpScreenState extends State<SignUpScreen> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
   send(auth) async {
-    print('yes');
     FocusScope.of(context).unfocus();
     auth.attemptSignUp(
       username: usernameController.text,
       email: emailController.text,
       password: passwordController.text,
       teamName: teamNameController.text,
+      confirm: passwordConfirmController.text,
     ).then((value){
       var formdata = formstate.currentState;
       if (formdata!.validate()) {
         formdata.save();
+
     if (value == Errors.none) {
-      if (verify(auth) == true) { 
+      // print('yeeessss');
       // ignore: use_build_context_synchronously
       showInfo(context, "Account created successfully!");
        Navigator.push(
@@ -59,18 +60,17 @@ class SignUpScreenState extends State<SignUpScreen> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       CreateTeamView()));
-      }
-      else {
-        showError(context, "Password and confirm password do not match");
-      }
+      
       // return true;
     } else if (value == Errors.weakError) {
       // ignore: use_build_context_synchronously
       showError(context, "The password provided is too weak.");
-    } else if (value == Errors.matchError) {
+    } 
+    else if (value == Errors.confirmMatchError) {
       // ignore: use_build_context_synchronously
-      showError(context, "Passwords doesn't match");
-    } else if (value == Errors.existsError) {
+      showError(context, "Password and confirm password do not match");
+    } 
+    else if (value == Errors.existsError) {
       // ignore: use_build_context_synchronously
       showError(context, "The account already exists for that email.");
     } else {
@@ -81,15 +81,6 @@ class SignUpScreenState extends State<SignUpScreen> {
     // return false;
   
     });
-  }
-  verify(auth) async {
-    if (passwordController.text.trim() == passwordConfirmController.text.trim()) {
-      print ('yeeeeeees');
-      return true;
-    } else {
-      print('noooooooooo'); 
-      return false;
-    }
   }
 
   @override
@@ -162,6 +153,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
                                       child: TextFormField(
+                                        textInputAction: TextInputAction.next,
                                         validator: (text) {
                   if (text!.isEmpty) {
                     return "Please Enter a valid Username";
@@ -225,7 +217,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                                       child: TextFormField(
                                         validator: (text) {
                   RegExp regex =
-                      RegExp("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})\$");
+                      RegExp("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})+");
                   if (text!.isEmpty || !regex.hasMatch(text)) {
                     return "Please Enter a valid Email";
                   }

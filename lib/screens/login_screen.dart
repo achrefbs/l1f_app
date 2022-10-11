@@ -51,15 +51,17 @@ class LoginScreenState extends State<LoginScreen> {
         showError(context, "Wrong email or password");
       } else if (value == Errors.noUserError) {
         showError(context, "No user found for that email!!");
-      } else { ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Logged in successfully')),
-          );
+      } else if (value == Errors.none){ 
+      showError(context, "Logged in successfully");
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => const HomeScreen(),
             ),
           );
+        }
+        else {
+        showError(context, "Something went wrong");
         }
       } 
     });
@@ -68,7 +70,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   showError(context, error) {
     var snackBar = SnackBar(
-        backgroundColor: Colors.red,
+        backgroundColor: kPlayerCardColorPrimary,
         content: Text(
           error,
           textAlign: TextAlign.center,
@@ -88,18 +90,20 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     AuthHelper auth = Provider.of<AuthHelper>(context);
-    return MaterialApp(
-        theme: ThemeData(
-          inputDecorationTheme: const InputDecorationTheme(
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: kPlayerCardColorPrimary),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: kPlayerCardColorPrimary),
-            ),
-          ),
-        ),
-        home: Scaffold(
+    return 
+    // MaterialApp(
+        // theme: ThemeData(
+        //   inputDecorationTheme: const InputDecorationTheme(
+        //     enabledBorder: UnderlineInputBorder(
+        //       borderSide: BorderSide(color: kPlayerCardColorPrimary),
+        //     ),
+        //     focusedBorder: UnderlineInputBorder(
+        //       borderSide: BorderSide(color: kPlayerCardColorPrimary),
+        //     ),
+        //   ),
+        // ),
+        // home: 
+        Scaffold(
             body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -151,7 +155,7 @@ class LoginScreenState extends State<LoginScreen> {
                                 child: TextFormField(
                                   validator: (text) {
                           RegExp regex =
-                              RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
+                              RegExp("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})+");
                           if (text!.isEmpty || !regex.hasMatch(text)) {
                             return "Please Enter a valid Email";
                           }
@@ -162,6 +166,10 @@ class LoginScreenState extends State<LoginScreen> {
                                   controller: emailController,
                                   decoration: const InputDecoration(
                                     hintText: 'Email',
+                                    
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: kPlayerCardColorPrimary),
+            ),
                                     hintStyle:
                                         TextStyle(fontWeight: FontWeight.bold),
                                     prefixIcon: Icon(Icons.email,
@@ -175,6 +183,7 @@ class LoginScreenState extends State<LoginScreen> {
                             SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.8,
                                 child: TextFormField(
+                          
                                   validator: (text) {
                           RegExp regex =
                               RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
@@ -183,10 +192,14 @@ class LoginScreenState extends State<LoginScreen> {
                           }
                           return null;
                         },
+                        
                                   keyboardType: TextInputType.visiblePassword,
                                   controller: passwordController,
                                   obscureText: obscure,
                                   decoration: InputDecoration(
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: kPlayerCardColorPrimary),
+            ),
                                     hintText: 'Password',
                                     hintStyle: const TextStyle(
                                         fontWeight: FontWeight.bold),
@@ -257,6 +270,8 @@ class LoginScreenState extends State<LoginScreen> {
                       )),
                 ))
               ]),
-        )));
+        )
+        // )
+        );
   }
 }
