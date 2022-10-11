@@ -30,15 +30,20 @@ class SignUpScreenState extends State<SignUpScreen> {
       teamName: teamNameController.text,
     );
     if (res == Errors.none) {
+      // ignore: use_build_context_synchronously
       showInfo(context, "Account created successfully!");
       return true;
     } else if (res == Errors.weakError) {
+      // ignore: use_build_context_synchronously
       showError(context, "The password provided is too weak.");
     } else if (res == Errors.matchError) {
+      // ignore: use_build_context_synchronously
       showError(context, "Passwords doesn't match");
     } else if (res == Errors.existsError) {
+      // ignore: use_build_context_synchronously
       showError(context, "The account already exists for that email.");
     } else {
+      // ignore: use_build_context_synchronously
       showError(context, "Failed to create account!");
     }
 

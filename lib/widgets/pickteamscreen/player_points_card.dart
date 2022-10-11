@@ -61,7 +61,7 @@ class PlayerPointsCard extends StatelessWidget {
         Positioned(
           top: 5,
           right: 5,
-          child: true
+          child: false
               //player.isCaptain
               ? Container(
                   width: 15,

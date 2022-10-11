@@ -2,7 +2,7 @@ import 'package:fantasyapp/models/player.dart';
 
 class PlayerLab {
   final List<Player> players = [
-    Player(0, "firstName", "lastName", "GK", 1, 5.5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    Player(21, "firstName", "lastName", "GK", 1, 5.5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0),
     Player(1, "firstName", "lastName", "GK", 2, 5.5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0),
