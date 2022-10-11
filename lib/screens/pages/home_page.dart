@@ -1,10 +1,6 @@
 import 'package:fantasyapp/vars.dart';
 import 'package:fantasyapp/widgets/newscard.dart';
-import 'package:fantasyapp/widgets/video_palyer.dart';
 import 'package:flutter/material.dart';
-import 'package:blurrycontainer/blurrycontainer.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:fantasyapp/providers/news.dart';
 import 'package:fantasyapp/models/news.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

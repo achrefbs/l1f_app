@@ -1,10 +1,10 @@
-import 'package:fantasyapp/playerB.dart';
+import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:flutter/material.dart';
 
-class PlayerPointsCard extends StatelessWidget {
-  final PlayerB player;
-  const PlayerPointsCard({
+class PlayerTransferCard extends StatelessWidget {
+  final Player player;
+  const PlayerTransferCard({
     Key? key,
     required this.player,
   }) : super(key: key);
@@ -15,12 +15,12 @@ class PlayerPointsCard extends StatelessWidget {
       children: [
         Column(
           children: [
-            Image(
-              image: AssetImage(player.image),
+            const Image(
+              image: AssetImage("images/est-shirt.png"),
               height: kPlayerCardShirtHeight,
             ),
             Container(
-              width: MediaQuery.of(context).size.width / 6,
+              width: kPlayerCardWidth,
               height: kPlayerCardHeight,
               decoration: const BoxDecoration(
                 color: kPlayerCardColorPrimary,
@@ -30,7 +30,7 @@ class PlayerPointsCard extends StatelessWidget {
                 ),
               ),
               child: Text(
-                "${player.firstName.substring(0, 1)}. ${player.lastName}",
+                player.name,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -40,7 +40,7 @@ class PlayerPointsCard extends StatelessWidget {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width / 6,
+              width: kPlayerCardWidth,
               height: kPlayerCardHeight,
               decoration: const BoxDecoration(
                   color: kPlayerCardColorSecondary,
@@ -48,7 +48,7 @@ class PlayerPointsCard extends StatelessWidget {
                       bottomLeft: Radius.circular(6),
                       bottomRight: Radius.circular(6))),
               child: Text(
-                "£${player.price}m",
+                player.price.toString(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: kPlayerCardTextColorSecondary,
@@ -61,8 +61,7 @@ class PlayerPointsCard extends StatelessWidget {
         Positioned(
           top: 5,
           right: 5,
-          child: true
-              //player.isCaptain
+          child: false //player.isCaptain
               ? Container(
                   width: 15,
                   height: 15,

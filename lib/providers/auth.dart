@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fantasyapp/models/manager.dart';
+import 'package:fantasyapp/models/squad.dart';
+import 'package:fantasyapp/playerB.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -13,16 +15,17 @@ enum Errors {
   noUserError,
 }
 
+Squad squad = Squad.empty();
+
 class AuthHelper with ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   Manager? current;
-  int currentGameWeek = 0;
 
   final usersRef =
-      FirebaseFirestore.instance.collection('managers').withConverter<Manager>(
+      FirebaseFirestore.instance.collection('Managers').withConverter<Manager>(
             fromFirestore: (snapshot, _) {
               return Manager.fromJson(
-                snapshot.data() ?? {},
+                snapshot.data()!,
               );
             },
             toFirestore: (user, _) => user.toJson(),
@@ -30,47 +33,35 @@ class AuthHelper with ChangeNotifier {
 
   get isLoggedIn => auth.currentUser != null;
 
-  attemptSignUp({
-    email,
-    fullname,
-    password,
-    passwordConfirmation,
-    phonenumber,
-    isMale,
-    username,
-    teamName,
+  Future attemptSignUp({
+    required String username,
+    required String email,
+    required String password,
+    required String teamName,
   }) async {
-    if (!(password == passwordConfirmation)) {
-      return Errors.matchError;
-    } else {
-      try {
-        UserCredential userCredential =
-            await auth.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
+    Manager manager;
+    try {
+      squad.name = teamName;
+      squad.owner = username;
 
-        usersRef.add(
-          Manager(
-            fullname: fullname,
-            email: email,
-            firebaseID: userCredential.user!.uid,
-            phonenumber: phonenumber,
-            isMale: isMale,
-            username: username,
-            teamName: teamName,
-          ),
-        );
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          return Errors.weakError;
-        } else if (e.code == 'email-already-in-use') {
-          return Errors.existsError;
-        }
-      } catch (e) {
-        return Errors.error;
-      }
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      manager = Manager(
+        userId: userCredential.user!.uid,
+        username: username,
+        isSuperAdmin: false,
+        squad: squad,
+        email: email,
+      );
+      usersRef.add(
+        manager,
+      );
+    } on FirebaseAuthException catch (_) {
+      return Errors.error;
     }
+    current = manager;
     return Errors.none;
   }
 
@@ -100,21 +91,41 @@ class AuthHelper with ChangeNotifier {
     if (current == null) {
       final user = auth.currentUser;
       final manager = await usersRef
-          .where('firebaseID', isEqualTo: user!.uid)
+          .where('user_id', isEqualTo: user!.uid)
           .get()
-          .then((value) => value.docs.first.data());
+          .then((value) {});
+
       current = manager;
     }
     return current!;
   }
 
-  //get highest points manager for gameweek
-  Future<Manager> getHighestPointsManager() async {
-    final manager = await usersRef
-        .orderBy('currentWeekPoints', descending: true)
-        .limit(1)
-        .get()
-        .then((value) => value.docs.first.data());
-    return manager;
+  setSquad(List<PlayerB> players, double price) async {
+    final user = auth.currentUser;
+    current!.squad.price = price;
+    current!.squad.emptyPlayers();
+    current!.squad.addPlayer(players[0]);
+    current!.squad.addPlayer(players[0]);
+    current!.squad.addPlayer(players[2]);
+    current!.squad.addPlayer(players[3]);
+    current!.squad.addPlayer(players[4]);
+    current!.squad.addPlayer(players[7]);
+    current!.squad.addPlayer(players[8]);
+    current!.squad.addPlayer(players[9]);
+    current!.squad.addPlayer(players[10]);
+    current!.squad.addPlayer(players[12]);
+    current!.squad.addPlayer(players[13]);
+    current!.squad.addPlayer(players[14]);
+    current!.squad.addPlayer(players[1]);
+    current!.squad.addPlayer(players[15]);
+    current!.squad.addPlayer(players[11]);
+    current!.squad.addPlayer(players[5]);
+    current!.squad.addPlayer(players[6]);
+
+    await usersRef.where('user_id', isEqualTo: user!.uid).get().then((value) {
+      value.docs[0].reference.update({'squad': current!.squad.toJson()});
+    }).onError((error, stackTrace) {});
+
+    notifyListeners();
   }
 }

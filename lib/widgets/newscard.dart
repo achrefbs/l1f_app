@@ -7,7 +7,7 @@ class NewsCard extends StatelessWidget {
   final String imgUrl, title, desc, videourl;
 
   const NewsCard({
-    Key? key,
+    super.key,
     required this.imgUrl,
     required this.desc,
     required this.title,
@@ -48,7 +48,11 @@ class NewsCard extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => NewsDetail(title:title, desc:desc ,imgUrl:imgUrl ,)));
+                              builder: (context) => NewsDetail(
+                                    title: title,
+                                    desc: desc,
+                                    imgUrl: imgUrl,
+                                  )));
                     },
                     child: Image.network(
                       imgUrl,
@@ -73,7 +77,7 @@ class NewsCard extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return VideoPlayerWidget();
+                  return const VideoPlayerWidget();
                 }
               })),
           Padding(

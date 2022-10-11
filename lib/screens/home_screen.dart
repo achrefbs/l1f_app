@@ -1,9 +1,7 @@
 import 'package:fantasyapp/models/manager.dart';
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
-import 'package:fantasyapp/screens/pages/fixtures_page.dart';
 import 'package:fantasyapp/screens/pages/home_page.dart';
-import 'package:fantasyapp/screens/pages/profile_page.dart';
 import 'package:fantasyapp/screens/pick_team_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,9 +16,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _items = [
     const HomePage(),
-    const FixturesPage(),
-    const PickTeamScreen(),
-    const ProfilePage(),
+    // const FixturesPage(),
+    // const PickTeamScreen(),
+    //const FantasyPage(),
   ];
   int selectedIndex = 0;
 
@@ -38,21 +36,31 @@ class _HomeScreenState extends State<HomeScreen> {
       currentManager = auth.getCurrentManager();
       return Scaffold(
         body: SafeArea(
-          child: FutureBuilder(
-            future: currentManager,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text("something went wrong!"),
-                );
-              }
-              if (snapshot.connectionState == ConnectionState.done) {
-                return _items[selectedIndex];
-              }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
+          child: Column(
+            children: [
+              TextButton(
+                onPressed: (() {
+                  auth.logout();
+                }),
+                child: const Text("logout"),
+              ),
+              FutureBuilder(
+                future: currentManager,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text("something went wrong!"),
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return _items[selectedIndex];
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
+            ],
           ),
         ),
         bottomNavigationBar: showBottomNav(),
