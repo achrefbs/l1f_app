@@ -16,7 +16,6 @@ class CreateTeamView extends StatefulWidget {
 
   CreateTeamView({
     super.key,
-    players,
     selectedPlayers,
   }) : selectedPlayers = (selectedPlayers == null)
             ? List<Player>.generate(
