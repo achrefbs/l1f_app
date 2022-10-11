@@ -13,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
+  GlobalKey<FormState> formstate = GlobalKey<FormState>();
   late Image image1;
   TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -32,24 +33,38 @@ class LoginScreenState extends State<LoginScreen> {
   send(AuthHelper auth) {
     FocusScope.of(context).unfocus();
     auth
-        .attemptLogin(emailController.text, passwordController.text)
+        .attemptLogin(emailController.text.trim(), passwordController.text.trim())
         .then((value) {
-      if (value == Errors.none && value.toString().isNotEmpty) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-        );
-      } else if (value == Errors.wrongError || value.toString().isEmpty) {
+      // if (value == Errors.none && value.toString().isNotEmpty) {
+      //   Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => const HomeScreen(),
+      //     ),
+      //   );
+      // }
+      var formdata = formstate.currentState;
+      if (formdata!.validate()) {
+        formdata.save();
+      if
+      (value == Errors.wrongError) {
         showError(context, "Wrong email or password");
       } else if (value == Errors.noUserError) {
-        showError(context, "No User!");
-      } else {
-        showError(context, "Failed to login!");
-      }
+        showError(context, "No user found for that email!!");
+      } else { ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Logged in successfully')),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+          );
+        }
+      } 
     });
   }
+   
 
   showError(context, error) {
     var snackBar = SnackBar(
@@ -116,7 +131,9 @@ class LoginScreenState extends State<LoginScreen> {
                       width: MediaQuery.of(context).size.width * 0.9,
                       height: MediaQuery.of(context).size.height * 0.9,
                       child: SingleChildScrollView(
-                        child: Column(
+                        child: Form(
+                key: formstate,
+                child: Column(
                           children: [
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.05,
@@ -131,7 +148,15 @@ class LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.8,
-                                child: TextField(
+                                child: TextFormField(
+                                  validator: (text) {
+                          RegExp regex =
+                              RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
+                          if (text!.isEmpty || !regex.hasMatch(text)) {
+                            return "Please Enter a valid Email";
+                          }
+                          return null;
+                        },
                                   textInputAction: TextInputAction.next,
                                   keyboardType: TextInputType.emailAddress,
                                   controller: emailController,
@@ -149,7 +174,15 @@ class LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.8,
-                                child: TextField(
+                                child: TextFormField(
+                                  validator: (text) {
+                          RegExp regex =
+                              RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
+                          if (text!.isEmpty || text.length < 6 ||!regex.hasMatch(text)) {
+                            return "Please enter a valid Password";
+                          }
+                          return null;
+                        },
                                   keyboardType: TextInputType.visiblePassword,
                                   controller: passwordController,
                                   obscureText: obscure,
@@ -222,7 +255,7 @@ class LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                       )),
-                )
+                ))
               ]),
         )));
   }

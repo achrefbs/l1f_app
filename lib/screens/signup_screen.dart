@@ -15,58 +15,14 @@ class SignUpScreen extends StatefulWidget {
 class SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController teamNameController = TextEditingController();
-
+  GlobalKey<FormState> formstate = GlobalKey<FormState>();
   TextEditingController passwordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
   bool obscure = true;
-
-  Future<bool> send(AuthHelper auth) async {
-    FocusScope.of(context).unfocus();
-    var res = await auth.attemptSignUp(
-      username: usernameController.text,
-      email: emailController.text,
-      password: passwordController.text,
-      teamName: teamNameController.text,
-    );
-    if (res == Errors.none) {
-      // ignore: use_build_context_synchronously
-      showInfo(context, "Account created successfully!");
-      return true;
-    } else if (res == Errors.weakError) {
-      // ignore: use_build_context_synchronously
-      showError(context, "The password provided is too weak.");
-    } else if (res == Errors.matchError) {
-      // ignore: use_build_context_synchronously
-      showError(context, "Passwords doesn't match");
-    } else if (res == Errors.existsError) {
-      // ignore: use_build_context_synchronously
-      showError(context, "The account already exists for that email.");
-    } else {
-      // ignore: use_build_context_synchronously
-      showError(context, "Failed to create account!");
-    }
-
-    return false;
-  }
-
-  verify(auth) async {
-    if (passwordController.text == passwordConfirmController.text) {
-      await send(auth);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   showError(context, error) {
     var snackBar = SnackBar(
-        backgroundColor: Colors.red,
+        backgroundColor: kPlayerCardColorPrimary,
         content: Text(
           error,
           textAlign: TextAlign.center,
@@ -82,9 +38,70 @@ class SignUpScreenState extends State<SignUpScreen> {
     ));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+  send(auth) async {
+    print('yes');
+    FocusScope.of(context).unfocus();
+    auth.attemptSignUp(
+      username: usernameController.text,
+      email: emailController.text,
+      password: passwordController.text,
+      teamName: teamNameController.text,
+    ).then((value){
+      var formdata = formstate.currentState;
+      if (formdata!.validate()) {
+        formdata.save();
+    if (value == Errors.none) {
+      if (verify(auth) == true) { 
+      // ignore: use_build_context_synchronously
+      showInfo(context, "Account created successfully!");
+       Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CreateTeamView()));
+      }
+      else {
+        showError(context, "Password and confirm password do not match");
+      }
+      // return true;
+    } else if (value == Errors.weakError) {
+      // ignore: use_build_context_synchronously
+      showError(context, "The password provided is too weak.");
+    } else if (value == Errors.matchError) {
+      // ignore: use_build_context_synchronously
+      showError(context, "Passwords doesn't match");
+    } else if (value == Errors.existsError) {
+      // ignore: use_build_context_synchronously
+      showError(context, "The account already exists for that email.");
+    } else {
+      // ignore: use_build_context_synchronously
+      showError(context, "Failed to create account!");
+    }
+      }    
+    // return false;
+  
+    });
+  }
+  verify(auth) async {
+    if (passwordController.text.trim() == passwordConfirmController.text.trim()) {
+      print ('yeeeeeees');
+      return true;
+    } else {
+      print('noooooooooo'); 
+      return false;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    AuthHelper auth = 
+                                            Provider.of<AuthHelper>(context,
+                                                listen: false);
     return Scaffold(
         body: Container(
             decoration: const BoxDecoration(
@@ -117,7 +134,10 @@ class SignUpScreenState extends State<SignUpScreen> {
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: MediaQuery.of(context).size.height * 0.9,
                           child: SingleChildScrollView(
-                            child: Column(
+                            child: 
+                            Form(
+          key: formstate,
+                          child:  Column(
                               children: [
                                 SizedBox(
                                   height:
@@ -141,7 +161,13 @@ class SignUpScreenState extends State<SignUpScreen> {
                                   SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
-                                      child: TextField(
+                                      child: TextFormField(
+                                        validator: (text) {
+                  if (text!.isEmpty) {
+                    return "Please Enter a valid Username";
+                  }
+                  return null;
+                },
                                         controller: usernameController,
                                         decoration: const InputDecoration(
                                           enabledBorder: UnderlineInputBorder(
@@ -155,6 +181,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                                           hintText: 'Username',
                                           prefixIcon: Icon(Icons.person,
                                               color: kPlayerCardColorPrimary),
+                                          
                                         ),
                                       )),
                                   SizedBox(
@@ -164,7 +191,13 @@ class SignUpScreenState extends State<SignUpScreen> {
                                   SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
-                                      child: TextField(
+                                      child: TextFormField(
+                                        validator: (text) {
+                  if (text!.isEmpty) {
+                    return "Please Enter a valid Team Name";
+                  }
+                  return null;
+                },
                                         textInputAction: TextInputAction.next,
                                         keyboardType: TextInputType.name,
                                         controller: teamNameController,
@@ -189,7 +222,15 @@ class SignUpScreenState extends State<SignUpScreen> {
                                   SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
-                                      child: TextField(
+                                      child: TextFormField(
+                                        validator: (text) {
+                  RegExp regex =
+                      RegExp("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})\$");
+                  if (text!.isEmpty || !regex.hasMatch(text)) {
+                    return "Please Enter a valid Email";
+                  }
+                  return null;
+                },
                                         textInputAction: TextInputAction.next,
                                         keyboardType:
                                             TextInputType.emailAddress,
@@ -215,7 +256,19 @@ class SignUpScreenState extends State<SignUpScreen> {
                                   SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
-                                      child: TextField(
+                                      child: TextFormField(
+                                        validator: (text) {
+                  RegExp regex =
+                      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
+                  if (text!.isEmpty || text.length < 8) {
+                    return "Please Enter a valid password over 8 characters";
+                  }
+                  if (!regex.hasMatch(text)) {
+                    // || !text.contains(RegExp("r'[A-Z]+").toString()) || !text.contains(RegExp("r'[1-9]+").toString())) {
+                    return "Password should contains  at least one upper case, one lower case and one digit ";
+                  }
+                  return null;
+                },
                                         controller: passwordController,
                                         obscureText: obscure,
                                         decoration: InputDecoration(
@@ -252,7 +305,19 @@ class SignUpScreenState extends State<SignUpScreen> {
                                   SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
-                                      child: TextField(
+                                      child: TextFormField(
+                                        validator: (text) {
+                  RegExp regex =
+                      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
+                  if (text!.isEmpty || text.length < 8) {
+                    return "Please Enter a valid password over 8 characters";
+                  }
+                  if (!regex.hasMatch(text)) {
+                    // || !text.contains(RegExp("r'[A-Z]+").toString()) || !text.contains(RegExp("r'[1-9]+").toString())) {
+                    return "Password should contains  at least one upper case, one lower case and one digit ";
+                  }
+                  return null;
+                },
                                         controller: passwordConfirmController,
                                         obscureText: obscure,
                                         decoration: InputDecoration(
@@ -292,17 +357,16 @@ class SignUpScreenState extends State<SignUpScreen> {
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.white),
-                                      onPressed: () {
-                                        AuthHelper auth =
-                                            Provider.of<AuthHelper>(context,
-                                                listen: false);
-                                        verify(auth).then((value) {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CreateTeamView()));
-                                        });
+                                      onPressed: () async{
+                                        
+                                              send(auth);
+                                        // verify(auth).then((value) {
+                                        //   Navigator.push(
+                                        //       context,
+                                        //       MaterialPageRoute(
+                                        //           builder: (context) =>
+                                        //               CreateTeamView()));
+                                        // });
                                       },
                                       child: const Text(
                                         'Next',
@@ -338,7 +402,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ],
                             ),
-                          )))
+                          ))))
                 ])));
   }
 }

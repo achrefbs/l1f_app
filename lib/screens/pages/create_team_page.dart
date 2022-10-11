@@ -11,9 +11,7 @@ import 'package:provider/provider.dart';
 
 class CreateTeamView extends StatefulWidget {
   final List<Player> selectedPlayers;
-
   late Squad squad;
-
   CreateTeamView({
     super.key,
     selectedPlayers,
@@ -30,6 +28,7 @@ class CreateTeamView extends StatefulWidget {
 
 class CreateTeamViewState extends State<CreateTeamView> {
   final double checkboxHeight = 30.0;
+  int teamComplete = 0;
   final double startingBudget = 100.0;
   double _budget = 100.0;
   bool _maxThreeSameTeam = true;
@@ -52,7 +51,6 @@ class CreateTeamViewState extends State<CreateTeamView> {
   emptyPlayer(int index) {
     Player player = widget.selectedPlayers[index];
     Widget playerView;
-
     if (player == null) {
       playerView = Image.asset(
         "assets/shirt_blank.png",
@@ -63,13 +61,14 @@ class CreateTeamViewState extends State<CreateTeamView> {
     }
 
     return InkWell(
-        onTap: () => Navigator.pushReplacement(context,
+        onTap: () {
+        Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (BuildContext context) {
               return PlayersCreationDetailsView(
                 selectedPlayers: widget.selectedPlayers,
                 playerIndex: index,
               );
-            })),
+            }));},
         child: Padding(
           padding: const EdgeInsets.only(left: 3.0, right: 3.0),
           child: playerView,
@@ -209,8 +208,19 @@ class CreateTeamViewState extends State<CreateTeamView> {
                 minWidth: double.infinity,
                 splashColor: Colors.teal,
                 textColor: Colors.white,
-                child: const Text("Save Team"),
+                child: const Text("Save Team", style: TextStyle(color: Colors.black),),
                 onPressed: () {
+                  var index = 0;
+                  for (index =0; index < widget.selectedPlayers.length; index++) {
+                  //   if (widget.selectedPlayers[index] == null) {
+                  //     showError(context, "Please select all players");
+                  //     break;
+                  //   }
+                if (widget.selectedPlayers[index].toJson()['team'] != 0){
+                  teamComplete ++;
+                }
+                  }
+                  
                   String message = "";
                   if (!_maxThreeSameTeam) {
                     message +=
@@ -220,8 +230,12 @@ class CreateTeamViewState extends State<CreateTeamView> {
                   if (_budget < 0) {
                     message += "You can't exceed the budget \n";
                   }
-
+                  if (teamComplete < 15) {
+                    message += "You need to select 15 players \n";
+                  }
                   if (message != "") {
+                    showError(context, message);
+                  
                   } else {
                     setState(() {
                       AuthHelper auth =
