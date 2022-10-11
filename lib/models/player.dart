@@ -1,108 +1,119 @@
-enum Pos {
-  gk,
-  def,
-  mid,
-  att,
-}
-
 class Player {
-  String id;
-  String name;
-  double price;
-  int age;
-  String birthDay;
-  String natinality;
-  double height;
-  double weight;
-  bool injured;
-  String photo;
-  String teamId;
-  int appearences;
-  int firstTeam;
-  int minutes;
-  Pos position;
-  int goals;
-  int yellowCards;
-  int yellowRedCards;
-  int redCards;
+  late int playerID;
+  late String firstName;
+  late String lastName;
+  late String position;
+  late int team;
+  late double price;
+  int points = 0;
+  int pointsWeek = 0;
+  int appearances = 0;
+  int subAppearances = 0;
+  int goals = 0;
+  int assists = 0;
+  int cleanSheets = 0;
+  int motms = 0;
+  int ownGoals = 0;
+  int redCards = 0;
+  int yellowCards = 0;
+  late String image;
 
-  Map<String, String> points;
+  Player(
+    this.playerID,
+    this.firstName,
+    this.lastName,
+    this.position,
+    this.team,
+    this.price,
+    this.points,
+    this.pointsWeek,
+    this.appearances,
+    this.subAppearances,
+    this.goals,
+    this.assists,
+    this.cleanSheets,
+    this.motms,
+    this.ownGoals,
+    this.redCards,
+    this.yellowCards,
+  ) {
+    if (position == ("GK")) {
+      image = "assets/goal.png";
+    } else {
+      image = "assets/shirt$team.png";
+    }
+  }
 
-  Player({
-    required this.name,
-    required this.id,
-    this.price = 5.0,
-    this.age = 23,
-    this.birthDay = '07/06/1999',
-    this.natinality = 'Tunisienne',
-    this.height = 1.75,
-    this.weight = 65.5,
-    this.injured = false,
-    this.photo = "",
-    required this.teamId,
-    this.appearences = 0,
-    this.firstTeam = 0,
-    this.minutes = 0,
-    required this.position,
-    this.goals = 69,
-    this.yellowCards = 0,
-    this.yellowRedCards = 0,
-    this.redCards = 0,
-    this.points = const {
-      "0": "0",
-      "1": "10",
-      "2": "8",
-      "3": "6",
-      "4": "4",
-      "5": "2",
-      "6": "1",
-    },
-  });
+  factory Player.fromJson(Map<String, dynamic> json) {
+    return Player(
+      int.parse(json['player_id']),
+      json['first_name'],
+      json['last_name'],
+      json['position'],
+      int.parse(json['team']),
+      double.parse(json['price']),
+      int.parse(json['points']),
+      int.parse(json['points_week']),
+      int.parse(json['appearances']),
+      int.parse(json['sub_appearances']),
+      int.parse(json['goals']),
+      int.parse(json['assists']),
+      int.parse(json['clean_sheets']),
+      int.parse(json['motms']),
+      int.parse(json['own_goals']),
+      int.parse(json['red_cards']),
+      int.parse(json['yellow_cards']),
+    );
+  }
 
-  Player.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'],
-        age = json['age'],
-        birthDay = json['birth_day'],
-        natinality = json['natinality'],
-        height = json['height'],
-        weight = json['weight'],
-        injured = json['injured'],
-        photo = json['photo'],
-        teamId = json['team_id'],
-        appearences = json['appearences'],
-        firstTeam = json['first_team'],
-        minutes = json['minutes'],
-        position = Pos.values[json['position']],
-        goals = json['goals'],
-        yellowCards = json['yellow_cards'],
-        yellowRedCards = json['yellow_red_cards'],
-        redCards = json['red_cards'],
-        points = json['points'],
-        price = json['price'];
+  Player.empty() {
+    price = 0.0;
+    image = "assets/shirt_blank.png";
+    firstName = "first";
+    lastName = "last";
+    position = "position";
+    team = 0;
+    playerID = 0;
+  }
 
-  Map<String, dynamic> toJson() {
+  String get teamAsString {
+    String suffix;
+    switch (team) {
+      case 1:
+        suffix = 'st';
+        break;
+      case 2:
+        suffix = 'nd';
+        break;
+      case 3:
+        suffix = 'rd';
+        break;
+      default:
+        suffix = 'th';
+    }
+    return team.toString() + suffix;
+  }
+
+  String get fullName => "$firstName $lastName";
+  Map<String, Object> toJson() {
     return {
-      'id': id,
-      'name': name,
-      'age': age,
-      'birthDay': birthDay,
-      'natinality': natinality,
-      'height': height,
-      'weight': weight,
-      'injured': injured,
-      'photo': photo,
-      'teamId': teamId,
-      'appearences': appearences,
-      'firstTeam': firstTeam,
-      'minutes': minutes,
-      'position': position.index,
-      'goals': goals,
-      'yellowCards': yellowCards,
-      'yellowRedCards': yellowRedCards,
-      'redCards': redCards,
-      'points': points,
+      'player_id': playerID,
+      'first_name': firstName,
+      'last_name': lastName,
+      'position': position,
+      'team': team,
       'price': price,
+      'points': points,
+      'points_week': pointsWeek,
+      'appearances': appearances,
+      'sub_appearances': subAppearances,
+      'goals': goals,
+      'assists': assists,
+      'clean_sheets': cleanSheets,
+      'motms': motms,
+      'own_goals': ownGoals,
+      'red_cards': redCards,
+      'yellow_cards': yellowCards,
     };
   }
 }

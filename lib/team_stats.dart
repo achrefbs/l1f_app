@@ -1,4 +1,4 @@
-import 'package:fantasyapp/playerB.dart';
+import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/player_lab.dart';
 
 enum Stat {
@@ -17,9 +17,9 @@ class TeamStats {
   String opponent = "";
   int ICScore = 0;
   int opponentScore = 0;
-  List<PlayerB> _appAvailablePlayers = List.from(PlayerLab.get().players);
-  List<PlayerB> _subAvailablePlayers = List.from(PlayerLab.get().players);
-  List<List<PlayerB>> _currentStats =
+  List<Player> _appAvailablePlayers = List.from(PlayerLab.get().players);
+  List<Player> _subAvailablePlayers = List.from(PlayerLab.get().players);
+  List<List<Player>> _currentStats =
       List.generate(Stat.ownGoals.index + 1, (int index) => []);
   static TeamStats? _teamStats;
 
@@ -29,7 +29,7 @@ class TeamStats {
   }
 
   //(players for the rest selection can be selected as union of index 0 and 1 in _currentStats
-  List<PlayerB> getAvailablePlayers(Stat stat) {
+  List<Player> getAvailablePlayers(Stat stat) {
     if (stat == Stat.appearances) {
       return _appAvailablePlayers;
     }
@@ -40,11 +40,11 @@ class TeamStats {
     return _currentStats[0] + _currentStats[1];
   }
 
-  List<PlayerB> getSelectedPlayers(Stat stat) {
+  List<Player> getSelectedPlayers(Stat stat) {
     return _currentStats[stat.index];
   }
 
-  bool isPlayerSelected(PlayerB player, Stat stat) {
+  bool isPlayerSelected(Player player, Stat stat) {
     return _currentStats[stat.index].contains(player);
   }
 
@@ -52,24 +52,24 @@ class TeamStats {
     return _currentStats[stat.index].length;
   }
 
-  int getStatPlayerCount(PlayerB player, Stat stat) {
-    return _currentStats[stat.index].where((PlayerB p) => p == player).length;
+  int getStatPlayerCount(Player player, Stat stat) {
+    return _currentStats[stat.index].where((Player p) => p == player).length;
   }
 
   //remove appearance players from subs list
   setSubSelection() {
     _currentStats[Stat.subs.index] = [];
     _subAvailablePlayers = List.from(PlayerLab.get().players);
-    for (PlayerB player in _currentStats[0]) {
+    for (Player player in _currentStats[0]) {
       _subAvailablePlayers.remove(player);
     }
   }
 
-  addPlayer(PlayerB player, Stat stat) {
+  addPlayer(Player player, Stat stat) {
     _currentStats[stat.index].add(player);
   }
 
-  removePlayer(PlayerB player, Stat stat) {
+  removePlayer(Player player, Stat stat) {
     _currentStats[stat.index].remove(player);
   }
 

@@ -1,9 +1,9 @@
-import 'package:fantasyapp/playerB.dart';
+import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/player_details_view.dart';
 import 'package:flutter/material.dart';
 
 class SubView extends StatelessWidget {
-  final PlayerB player;
+  final Player player;
   final int index;
 
   const SubView({Key? key, required this.player, required this.index})

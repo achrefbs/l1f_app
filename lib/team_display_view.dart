@@ -1,4 +1,3 @@
-import 'package:fantasyapp/internet_async.dart';
 import 'package:fantasyapp/models/manager.dart';
 import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/player_lab.dart';
@@ -78,17 +77,17 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
               child: saveChanges,
               onPressed: () {
                 setState(() {
-                  saveChanges = FutureBuilder(
-                    future: InternetAsync().updateTeam(context),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return const Text("Press to save changes");
-                      }
+                  // saveChanges = FutureBuilder(
+                  //   future: InternetAsync().updateTeam(context),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.connectionState == ConnectionState.done) {
+                  //       return const Text("Press to save changes");
+                  //     }
 
-                      // By default, show a loading spinner
-                      return const CircularProgressIndicator();
-                    },
-                  );
+                  //     // By default, show a loading spinner
+                  //     return const CircularProgressIndicator();
+                  //   },
+                  // );
                 });
               }),
         ],
@@ -105,7 +104,7 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
                 children: List.generate(
                     1,
                     (index) => PlayerView(
-                          player: team.players[0]!,
+                          player: team.players[0],
                           index: 0,
                           updateState: updateState,
                         )),
@@ -118,7 +117,7 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
                 children: List.generate(
                     team.defNum,
                     (index) => PlayerView(
-                        player: team.players[index + 1]!,
+                        player: team.players[index + 1],
                         index: index + 1,
                         updateState: updateState)),
               )),
@@ -130,7 +129,7 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
                 children: List.generate(
                     team.midNum,
                     (index) => PlayerView(
-                        player: team.players[index + team.defNum + 1]!,
+                        player: team.players[index + team.defNum + 1],
                         index: index + team.defNum + 1,
                         updateState: updateState)),
               )),
@@ -142,8 +141,8 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
                 children: List.generate(
                     team.fwdNum,
                     (index) => PlayerView(
-                        player: team
-                            .players[index + team.defNum + team.midNum + 1]!,
+                        player:
+                            team.players[index + team.defNum + team.midNum + 1],
                         index: index + team.defNum + team.midNum + 1,
                         updateState: updateState)),
               )),
@@ -155,7 +154,7 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
                 children: List.generate(
                     5,
                     (index) => SubView(
-                        player: team.players[11 + index]!, index: 11 + index)),
+                        player: team.players[11 + index], index: 11 + index)),
               )),
           Expanded(flex: 5, child: Container()),
         ],

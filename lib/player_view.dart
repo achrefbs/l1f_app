@@ -1,5 +1,5 @@
+import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/models/squad.dart';
-import 'package:fantasyapp/playerB.dart';
 import 'package:fantasyapp/player_details_view.dart';
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class PlayerView extends StatefulWidget {
   final Function updateState;
-  final PlayerB player;
+  final Player player;
   final int index;
 
   const PlayerView(
