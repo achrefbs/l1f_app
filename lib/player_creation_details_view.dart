@@ -264,7 +264,6 @@ class PlayersDataSource extends DataTableSource {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (BuildContext context) {
             return CreateTeamView(
-              players: _players,
               selectedPlayers: _selectedPlayers,
             );
           }));
