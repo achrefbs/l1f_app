@@ -18,37 +18,41 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kBarColor,
-        appBar: AppBar(
-          title: const Text(
-            'Fantasy News',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+      backgroundColor: kBarColor,
+      appBar: AppBar(
+        title: const Text(
+          'Fantasy News',
+          style: TextStyle(color: Colors.white),
         ),
-        body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection("News").snapshots(),
-            builder: (_, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(child: Text("Something went wrong"));
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              final docs = snapshot.data!.docs;
-              return ListView.builder(
-                  itemCount: docs.length,
-                  itemBuilder: (_, index) {
-                    final data = docs[index].data();
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: Text("home"),
+      // body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      //   stream: FirebaseFirestore.instance.collection("News").snapshots(),
+      //   builder: (_, snapshot) {
+      //     if (snapshot.hasError) {
+      //       return const Center(child: Text("Something went wrong"));
+      //     }
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return const Center(child: CircularProgressIndicator());
+      //     }
+      //     final docs = snapshot.data!.docs;
+      //     return ListView.builder(
+      //       itemCount: docs.length,
+      //       itemBuilder: (_, index) {
+      //         final data = docs[index].data();
 
-                    return NewsCard(
-                      imgUrl: data['imgUrl'],
-                      title: data['title'],
-                      desc: data['desc'],
-                      videourl: data['videoUrl'],
-                    );
-                  });
-            }));
+      //         return NewsCard(
+      //           imgUrl: data['imgUrl'],
+      //           title: data['title'],
+      //           desc: data['desc'],
+      //           videourl: data['videoUrl'],
+      //         );
+      //       },
+      //     );
+      //   },
+      // ),
+    );
   }
 }
