@@ -97,7 +97,6 @@ class CreateTeamViewState extends State<CreateTeamView> {
 
   @override
   Widget build(BuildContext context) {
-    AuthHelper auth = Provider.of(context);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -156,25 +155,25 @@ class CreateTeamViewState extends State<CreateTeamView> {
                     ),
                     child: Column(
                       children: [
-                        SizedBox(height: 40),
+                        const SizedBox(height: 40),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children:
                               List.generate(2, (index) => emptyPlayer(index)),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: List.generate(
                               5, (index) => emptyPlayer(index + 2)),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: List.generate(
                               5, (index) => emptyPlayer(index + 7)),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: List.generate(

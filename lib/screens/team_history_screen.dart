@@ -2,8 +2,6 @@ import 'package:fantasyapp/models/manager.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:fantasyapp/widgets/header.dart';
-
-import 'package:fantasyapp/widgets/pickteamscreen/subtitute_line.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -119,20 +117,7 @@ class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
                         ),
                       ),
                       child: Column(
-                        children: [
-                          // const SizedBox(height: 40),
-                          // GoadLine(
-                          //   playerID: "0",
-                          // ),
-                          // const SizedBox(height: 20),
-                          // const DefenceLine(),
-                          // const SizedBox(height: 20),
-                          // const MidLine(),
-                          // const SizedBox(height: 20),
-                          // const AttackLine(),
-                          // const SizedBox(height: 110),
-                          // const SubstituteLine(),
-                        ],
+                        children: const [],
                       ),
                     ),
                     Positioned(

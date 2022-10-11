@@ -2,6 +2,8 @@ import 'package:fantasyapp/models/manager.dart';
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
 import 'package:fantasyapp/screens/pages/home_page.dart';
+import 'package:fantasyapp/team_display_view.dart';
+import 'package:fantasyapp/teams_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +17,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _items = [
     const HomePage(),
-    // const FixturesPage(),
-    // const PickTeamScreen(),
+    const TeamsDetailsView(),
+    const TeamDisplayView(),
     //const FantasyPage(),
   ];
   int selectedIndex = 0;
