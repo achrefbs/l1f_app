@@ -152,7 +152,7 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(
-                    5,
+                    4,
                     (index) => SubView(
                         player: team.players[11 + index], index: 11 + index)),
               )),

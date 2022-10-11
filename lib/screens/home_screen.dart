@@ -2,6 +2,7 @@ import 'package:fantasyapp/models/manager.dart';
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
 import 'package:fantasyapp/screens/pages/home_page.dart';
+import 'package:fantasyapp/screens/team_history_screen.dart';
 import 'package:fantasyapp/team_display_view.dart';
 import 'package:fantasyapp/teams_details_view.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
     const HomePage(),
     const SizedBox(height: 600, child: TeamsDetailsView()),
     const SizedBox(height: 600, child: TeamDisplayView()),
-    //const FantasyPage(),
   ];
   int selectedIndex = 0;
 
@@ -39,12 +39,34 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
           child: Column(
             children: [
-              TextButton(
-                onPressed: (() {
-                  auth.logout();
-                }),
-                child: const Text("logout"),
-              ),
+              FutureBuilder(
+                  future: currentManager,
+                  builder: (context, snapshot) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TeamHistoryScreen(
+                                  manager: snapshot.data as Manager,
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Text('Team History'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            auth.logout();
+                          },
+                          child: const Text('Logout'),
+                        ),
+                      ],
+                    );
+                  }),
               FutureBuilder(
                 future: currentManager,
                 builder: (context, snapshot) {

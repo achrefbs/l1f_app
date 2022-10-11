@@ -14,31 +14,31 @@ class Squad {
   final List<Player> players = [];
 
   Squad(
-      this.squadID,
-      this.name,
-      this.owner,
-      this.price,
-      this.points,
-      this.pointsWeek,
-      this.defNum,
-      this.midNum,
-      this.fwdNum,
-      int goalId,
-      int player1Id,
-      int player2Id,
-      int player3Id,
-      int player4Id,
-      int player5Id,
-      int player6Id,
-      int player7Id,
-      int player8Id,
-      int player9Id,
-      int player10Id,
-      int subGoalId,
-      int sub1Id,
-      int sub2Id,
-      int sub3Id,
-      int sub4Id) {
+    this.squadID,
+    this.name,
+    this.owner,
+    this.price,
+    this.points,
+    this.pointsWeek,
+    this.defNum,
+    this.midNum,
+    this.fwdNum,
+    int goalId,
+    int player1Id,
+    int player2Id,
+    int player3Id,
+    int player4Id,
+    int player5Id,
+    int player6Id,
+    int player7Id,
+    int player8Id,
+    int player9Id,
+    int player10Id,
+    int subGoalId,
+    int sub1Id,
+    int sub2Id,
+    int sub3Id,
+  ) {
     PlayerLab playerLab = PlayerLab.get();
     players.add(playerLab.getPlayer(goalId));
     players.add(playerLab.getPlayer(player1Id));
@@ -55,7 +55,6 @@ class Squad {
     players.add(playerLab.getPlayer(sub1Id));
     players.add(playerLab.getPlayer(sub2Id));
     players.add(playerLab.getPlayer(sub3Id));
-    players.add(playerLab.getPlayer(sub4Id));
   }
 
   factory Squad.fromJson(Map<String, dynamic> json) {
@@ -83,8 +82,7 @@ class Squad {
         json['sub_goal'],
         json['sub1'],
         json['sub2'],
-        json['sub3'],
-        json['sub4']);
+        json['sub3']);
   }
 
   addPlayer(Player player) {
@@ -190,11 +188,10 @@ class Squad {
         'sub1': players[12].playerID,
         'sub2': players[13].playerID,
         'sub3': players[14].playerID,
-        'sub4': players[15].playerID,
       };
 
   static empty() {
     return Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0);
+        0, 0, 0, 0, 0, 0, 0);
   }
 }

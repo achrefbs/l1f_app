@@ -100,8 +100,10 @@ class AuthHelper with ChangeNotifier {
   setSquad(List<Player> players, double price) async {
     final user = auth.currentUser;
     current!.squad.price = price;
+    current!.squad.defNum = 3;
+    current!.squad.midNum = 4;
+    current!.squad.fwdNum = 3;
     current!.squad.emptyPlayers();
-    current!.squad.addPlayer(players[0]);
     current!.squad.addPlayer(players[0]);
     current!.squad.addPlayer(players[2]);
     current!.squad.addPlayer(players[3]);
@@ -114,11 +116,9 @@ class AuthHelper with ChangeNotifier {
     current!.squad.addPlayer(players[13]);
     current!.squad.addPlayer(players[14]);
     current!.squad.addPlayer(players[1]);
-    current!.squad.addPlayer(players[15]);
-    current!.squad.addPlayer(players[11]);
     current!.squad.addPlayer(players[5]);
     current!.squad.addPlayer(players[6]);
-
+    current!.squad.addPlayer(players[11]);
     await usersRef.where('user_id', isEqualTo: user!.uid).get().then((value) {
       value.docs[0].reference.update({'squad': current!.squad.toJson()});
     }).onError((error, stackTrace) {});
