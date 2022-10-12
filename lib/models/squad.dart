@@ -1,8 +1,11 @@
 import 'package:fantasyapp/models/player.dart';
 import 'package:fantasyapp/player_lab.dart';
+import 'package:uuid/uuid.dart';
+
+var uuid = const Uuid();
 
 class Squad {
-  int squadID;
+  late String squadID;
   String name;
   String owner;
   double price;
@@ -39,6 +42,9 @@ class Squad {
     int sub2Id,
     int sub3Id,
   ) {
+    if (squadID == '') {
+      squadID = uuid.v4();
+    }
     PlayerLab playerLab = PlayerLab.get();
     players.add(playerLab.getPlayer(goalId));
     players.add(playerLab.getPlayer(player1Id));
@@ -191,7 +197,7 @@ class Squad {
       };
 
   static empty() {
-    return Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0);
+    return Squad("", "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0);
   }
 }

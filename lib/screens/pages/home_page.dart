@@ -1,8 +1,6 @@
 import 'package:fantasyapp/vars.dart';
-import 'package:fantasyapp/widgets/newscard.dart';
 import 'package:flutter/material.dart';
 import 'package:fantasyapp/models/news.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,7 +25,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Text("home"),
+      body: const Text("home"),
       // body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       //   stream: FirebaseFirestore.instance.collection("News").snapshots(),
       //   builder: (_, snapshot) {

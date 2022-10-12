@@ -1,5 +1,4 @@
 import 'package:fantasyapp/models/manager.dart';
-import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:fantasyapp/widgets/header.dart';
@@ -18,14 +17,14 @@ class TeamHistoryScreen extends StatefulWidget {
 class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
   int index = 0;
 
-  Map<int, Squad> squadHistoryE = {
-    0: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0),
-    1: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0),
-    2: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0),
-  };
+  // Map<int, Squad> squadHistoryE = {
+  //   0: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  //       0, 0, 0, 0, 0, 0),
+  //   1: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  //       0, 0, 0, 0, 0, 0),
+  //   2: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  //       0, 0, 0, 0, 0, 0),
+  // };
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +62,7 @@ class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
                     ),
                     IconButton(
                       onPressed: () {
-                        if (index < squadHistoryE.length - 1) {
+                        if (index < widget.manager.squadHistory.length - 1) {
                           setState(() {
                             index++;
                           });

@@ -7,7 +7,6 @@ import 'package:fantasyapp/team_display_view.dart';
 import 'package:fantasyapp/teams_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -26,15 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   late Future<Manager> currentManager;
 
-  Future<void> getFruit() async {
-    HttpsCallable callable =
-        FirebaseFunctions.instance.httpsCallable('listFruit');
-    final results = await callable();
-    List fruit =
-        results.data; // ["Apple", "Banana", "Cherry", "Date", "Fig", "Grapes"]
-    print(fruit);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -42,8 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    getFruit();
-
     AuthHelper auth = Provider.of<AuthHelper>(context);
     if (auth.isLoggedIn) {
       currentManager = auth.getCurrentManager();

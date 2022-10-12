@@ -1,4 +1,5 @@
 import 'package:fantasyapp/providers/auth.dart';
+import 'package:fantasyapp/providers/general.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
 import 'package:fantasyapp/screens/pages/create_team_page.dart';
 import 'package:fantasyapp/vars.dart';
@@ -38,48 +39,47 @@ class SignUpScreenState extends State<SignUpScreen> {
     ));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-  send(auth) async {
+
+  send(AuthHelper auth, General general) async {
     FocusScope.of(context).unfocus();
-    auth.attemptSignUp(
+    var currentWeek = await general.getCurrentweek();
+    auth
+        .attemptSignUp(
       username: usernameController.text,
       email: emailController.text,
       password: passwordController.text,
       teamName: teamNameController.text,
       confirm: passwordConfirmController.text,
-    ).then((value){
+      currentWeek: currentWeek,
+    )
+        .then((value) {
       var formdata = formstate.currentState;
       if (formdata!.validate()) {
         formdata.save();
 
-    if (value == Errors.none) {
-      // print('yeeessss');
-      // ignore: use_build_context_synchronously
-      showInfo(context, "Account created successfully!");
-       Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CreateTeamView()));
-      
-      // return true;
-    } else if (value == Errors.weakError) {
-      // ignore: use_build_context_synchronously
-      showError(context, "The password provided is too weak.");
-    } 
-    else if (value == Errors.confirmMatchError) {
-      // ignore: use_build_context_synchronously
-      showError(context, "Password and confirm password do not match");
-    } 
-    else if (value == Errors.existsError) {
-      // ignore: use_build_context_synchronously
-      showError(context, "The account already exists for that email.");
-    } else {
-      // ignore: use_build_context_synchronously
-      showError(context, "Failed to create account!");
-    }
-      }    
-    // return false;
-  
+        if (value == Errors.none) {
+          // print('yeeessss');
+          // ignore: use_build_context_synchronously
+          showInfo(context, "Account created successfully!");
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CreateTeamView()));
+
+          // return true;
+        } else if (value == Errors.weakError) {
+          // ignore: use_build_context_synchronously
+          showError(context, "The password provided is too weak.");
+        } else if (value == Errors.confirmMatchError) {
+          // ignore: use_build_context_synchronously
+          showError(context, "Password and confirm password do not match");
+        } else if (value == Errors.existsError) {
+          // ignore: use_build_context_synchronously
+          showError(context, "The account already exists for that email.");
+        } else {
+          // ignore: use_build_context_synchronously
+          showError(context, "Failed to create account!");
+        }
+      }
+      // return false;
     });
   }
 
@@ -90,9 +90,8 @@ class SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AuthHelper auth = 
-                                            Provider.of<AuthHelper>(context,
-                                                listen: false);
+    AuthHelper auth = Provider.of<AuthHelper>(context, listen: false);
+    General general = Provider.of<General>(context, listen: false);
     return Scaffold(
         body: Container(
             decoration: const BoxDecoration(
@@ -125,10 +124,9 @@ class SignUpScreenState extends State<SignUpScreen> {
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: MediaQuery.of(context).size.height * 0.9,
                           child: SingleChildScrollView(
-                            child: 
-                            Form(
-          key: formstate,
-                          child:  Column(
+                              child: Form(
+                            key: formstate,
+                            child: Column(
                               children: [
                                 SizedBox(
                                   height:
@@ -155,11 +153,11 @@ class SignUpScreenState extends State<SignUpScreen> {
                                       child: TextFormField(
                                         textInputAction: TextInputAction.next,
                                         validator: (text) {
-                  if (text!.isEmpty) {
-                    return "Please Enter a valid Username";
-                  }
-                  return null;
-                },
+                                          if (text!.isEmpty) {
+                                            return "Please Enter a valid Username";
+                                          }
+                                          return null;
+                                        },
                                         controller: usernameController,
                                         decoration: const InputDecoration(
                                           enabledBorder: UnderlineInputBorder(
@@ -173,7 +171,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                                           hintText: 'Username',
                                           prefixIcon: Icon(Icons.person,
                                               color: kPlayerCardColorPrimary),
-                                          
                                         ),
                                       )),
                                   SizedBox(
@@ -185,11 +182,11 @@ class SignUpScreenState extends State<SignUpScreen> {
                                           0.8,
                                       child: TextFormField(
                                         validator: (text) {
-                  if (text!.isEmpty) {
-                    return "Please Enter a valid Team Name";
-                  }
-                  return null;
-                },
+                                          if (text!.isEmpty) {
+                                            return "Please Enter a valid Team Name";
+                                          }
+                                          return null;
+                                        },
                                         textInputAction: TextInputAction.next,
                                         keyboardType: TextInputType.name,
                                         controller: teamNameController,
@@ -216,13 +213,14 @@ class SignUpScreenState extends State<SignUpScreen> {
                                           0.8,
                                       child: TextFormField(
                                         validator: (text) {
-                  RegExp regex =
-                      RegExp("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})+");
-                  if (text!.isEmpty || !regex.hasMatch(text)) {
-                    return "Please Enter a valid Email";
-                  }
-                  return null;
-                },
+                                          RegExp regex = RegExp(
+                                              "^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})+");
+                                          if (text!.isEmpty ||
+                                              !regex.hasMatch(text)) {
+                                            return "Please Enter a valid Email";
+                                          }
+                                          return null;
+                                        },
                                         textInputAction: TextInputAction.next,
                                         keyboardType:
                                             TextInputType.emailAddress,
@@ -250,17 +248,18 @@ class SignUpScreenState extends State<SignUpScreen> {
                                           0.8,
                                       child: TextFormField(
                                         validator: (text) {
-                  RegExp regex =
-                      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
-                  if (text!.isEmpty || text.length < 8) {
-                    return "Please Enter a valid password over 8 characters";
-                  }
-                  if (!regex.hasMatch(text)) {
-                    // || !text.contains(RegExp("r'[A-Z]+").toString()) || !text.contains(RegExp("r'[1-9]+").toString())) {
-                    return "Password should contains  at least one upper case, one lower case and one digit ";
-                  }
-                  return null;
-                },
+                                          RegExp regex = RegExp(
+                                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
+                                          if (text!.isEmpty ||
+                                              text.length < 8) {
+                                            return "Please Enter a valid password over 8 characters";
+                                          }
+                                          if (!regex.hasMatch(text)) {
+                                            // || !text.contains(RegExp("r'[A-Z]+").toString()) || !text.contains(RegExp("r'[1-9]+").toString())) {
+                                            return "Password should contains  at least one upper case, one lower case and one digit ";
+                                          }
+                                          return null;
+                                        },
                                         controller: passwordController,
                                         obscureText: obscure,
                                         decoration: InputDecoration(
@@ -299,17 +298,18 @@ class SignUpScreenState extends State<SignUpScreen> {
                                           0.8,
                                       child: TextFormField(
                                         validator: (text) {
-                  RegExp regex =
-                      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
-                  if (text!.isEmpty || text.length < 8) {
-                    return "Please Enter a valid password over 8 characters";
-                  }
-                  if (!regex.hasMatch(text)) {
-                    // || !text.contains(RegExp("r'[A-Z]+").toString()) || !text.contains(RegExp("r'[1-9]+").toString())) {
-                    return "Password should contains  at least one upper case, one lower case and one digit ";
-                  }
-                  return null;
-                },
+                                          RegExp regex = RegExp(
+                                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
+                                          if (text!.isEmpty ||
+                                              text.length < 8) {
+                                            return "Please Enter a valid password over 8 characters";
+                                          }
+                                          if (!regex.hasMatch(text)) {
+                                            // || !text.contains(RegExp("r'[A-Z]+").toString()) || !text.contains(RegExp("r'[1-9]+").toString())) {
+                                            return "Password should contains  at least one upper case, one lower case and one digit ";
+                                          }
+                                          return null;
+                                        },
                                         controller: passwordConfirmController,
                                         obscureText: obscure,
                                         decoration: InputDecoration(
@@ -349,9 +349,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.white),
-                                      onPressed: () async{
-                                        
-                                              send(auth);
+                                      onPressed: () async {
+                                        send(auth, general);
                                         // verify(auth).then((value) {
                                         //   Navigator.push(
                                         //       context,

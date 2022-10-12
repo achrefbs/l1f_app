@@ -39,38 +39,41 @@ class AuthHelper with ChangeNotifier {
     required String email,
     required String password,
     required String teamName,
-    required String confirm
+    required String confirm,
+    required int currentWeek,
   }) async {
     Manager manager;
     if (password == confirm) {
-    try {
-      squad.name = teamName;
-      squad.owner = username;
-      
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      manager = Manager(
-        userId: userCredential.user!.uid,
-        username: username,
-        isSuperAdmin: false,
-        squad: squad,
-        email: email,
-      );
-      usersRef.add(
-        manager,
-      );
-    } on FirebaseAuthException catch (_) {
-      return Errors.error;
+      try {
+        squad.name = teamName;
+        squad.owner = username;
+
+        UserCredential userCredential =
+            await auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        manager = Manager(
+          currentWeek: currentWeek,
+          userId: userCredential.user!.uid,
+          username: username,
+          isSuperAdmin: false,
+          squad: squad,
+          email: email,
+        );
+        usersRef.add(
+          manager,
+        );
+      } on FirebaseAuthException catch (_) {
+        return Errors.error;
+      }
+      current = manager;
+      return Errors.none;
+    } else {
+      return Errors.confirmMatchError;
     }
-    current = manager;
-    return Errors.none;
   }
-  else {
-    return  Errors.confirmMatchError;
-  }
-}
+
   attemptLogin(email, password) async {
     try {
       await auth.signInWithEmailAndPassword(
@@ -133,10 +136,11 @@ class AuthHelper with ChangeNotifier {
   }
 
 ////// length of favorites
-CollectionReference manager = FirebaseFirestore.instance.collection('manager');
- bool checkavailability ()  {
-   var list = manager.doc().get();
-   print(list);
-return false;
-}
+  // CollectionReference manager =
+  //     FirebaseFirestore.instance.collection('manager');
+  // bool checkavailability() {
+  //   var list = manager.doc().get();
+  //   print(list);
+  //   return false;
+  // }
 }
