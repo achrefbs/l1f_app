@@ -31,6 +31,10 @@ class AuthHelper with ChangeNotifier {
             },
             toFirestore: (user, _) => user.toJson(),
           );
+  void printf(){
+    print('aaaaaaaaaaaaaa');
+    print(usersRef);
+  }
 
   get isLoggedIn => auth.currentUser != null;
 
@@ -131,12 +135,4 @@ class AuthHelper with ChangeNotifier {
 
     notifyListeners();
   }
-
-////// length of favorites
-CollectionReference manager = FirebaseFirestore.instance.collection('manager');
- bool checkavailability ()  {
-   var list = manager.doc().get();
-   print(list);
-return false;
-}
 }

@@ -55,6 +55,8 @@ class CreateTeamViewState extends State<CreateTeamView> {
         onTap: () {
         Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (BuildContext context) {
+                  AuthHelper auth =
+                          Provider.of<AuthHelper>(context, listen: false);
               return PlayersCreationDetailsView(
                 selectedPlayers: widget.selectedPlayers,
                 playerIndex: index,
@@ -201,6 +203,9 @@ class CreateTeamViewState extends State<CreateTeamView> {
                 textColor: Colors.white,
                 child: const Text("Save Team", style: TextStyle(color: Colors.black),),
                 onPressed: () {
+                  AuthHelper auth =
+                          Provider.of<AuthHelper>(context, listen: false);
+                  auth.printf();
                   var index = 0;
                   for (index =0; index < widget.selectedPlayers.length; index++) {
                   //   if (widget.selectedPlayers[index] == null) {
