@@ -1,9 +1,12 @@
 import 'package:fantasyapp/models/manager.dart';
+import 'package:fantasyapp/models/squad.dart';
+import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
 import 'package:fantasyapp/vars.dart';
 import 'package:fantasyapp/widgets/header.dart';
 import 'package:fantasyapp/widgets/pickteamscreen/player_points_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class TeamHistoryScreen extends StatefulWidget {
@@ -17,17 +20,14 @@ class TeamHistoryScreen extends StatefulWidget {
 class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
   int index = 0;
 
-  // Map<int, Squad> squadHistoryE = {
-  //   0: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  //       0, 0, 0, 0, 0, 0),
-  //   1: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  //       0, 0, 0, 0, 0, 0),
-  //   2: Squad(0, "name", "owner", 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  //       0, 0, 0, 0, 0, 0),
-  // };
+  Map<int, Future<Squad>> squadHistory = {};
 
   @override
   Widget build(BuildContext context) {
+    AuthHelper auth = Provider.of<AuthHelper>(context);
+    for (var i = 0; i < widget.manager.squadHistory.length; i++) {
+      squadHistory[i] = auth.getSquad(widget.manager.squadHistory[i]);
+    }
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
@@ -107,61 +107,76 @@ class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(
-                                1,
-                                (index) => PlayerPointsCard(
-                                      player: widget.manager.squad.players[0],
-                                    )),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(
-                                widget.manager.squad.defNum,
-                                (index) => PlayerPointsCard(
-                                      player: widget
-                                          .manager.squad.players[index + 1],
-                                    )),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(
-                              widget.manager.squad.midNum,
-                              (index) => PlayerPointsCard(
-                                player: widget.manager.squad.players[
-                                    index + widget.manager.squad.defNum + 1],
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(
-                                widget.manager.squad.fwdNum,
-                                (index) => PlayerPointsCard(
-                                      player: widget.manager.squad.players[
-                                          index +
-                                              widget.manager.squad.defNum +
-                                              widget.manager.squad.midNum +
-                                              1],
-                                    )),
-                          ),
-                          Expanded(flex: 1, child: Container()),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(
-                                4,
-                                (index) => PlayerPointsCard(
-                                      player: widget
-                                          .manager.squad.players[11 + index],
-                                    )),
-                          ),
-                          const SizedBox(height: 50),
-                        ],
-                      ),
+                      child: FutureBuilder(
+                          future: squadHistory[index],
+                          builder: (context, AsyncSnapshot<Squad?> snapshot) {
+                            if (snapshot.hasData) {
+                              return Column(
+                                children: [
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: List.generate(
+                                        1,
+                                        (index) => PlayerPointsCard(
+                                              player: snapshot.data!.players[0],
+                                            )),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: List.generate(
+                                        snapshot.data!.defNum,
+                                        (index) => PlayerPointsCard(
+                                              player: snapshot
+                                                  .data!.players[index + 1],
+                                            )),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: List.generate(
+                                      snapshot.data!.midNum,
+                                      (index) => PlayerPointsCard(
+                                        player: snapshot.data!.players[
+                                            index + snapshot.data!.defNum + 1],
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: List.generate(
+                                      snapshot.data!.fwdNum,
+                                      (index) => PlayerPointsCard(
+                                        player: snapshot.data!.players[index +
+                                            snapshot.data!.defNum +
+                                            snapshot.data!.midNum +
+                                            1],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(flex: 1, child: Container()),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: List.generate(
+                                        4,
+                                        (index) => PlayerPointsCard(
+                                              player: snapshot
+                                                  .data!.players[11 + index],
+                                            )),
+                                  ),
+                                  const SizedBox(height: 50),
+                                ],
+                              );
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          }),
                     ),
                     Positioned(
                       top: 20,

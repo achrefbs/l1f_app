@@ -31,6 +31,15 @@ class AuthHelper with ChangeNotifier {
             },
             toFirestore: (user, _) => user.toJson(),
           );
+  final squadRef =
+      FirebaseFirestore.instance.collection('Squads').withConverter<Squad>(
+            fromFirestore: (snapshot, _) {
+              return Squad.fromJson(
+                snapshot.data()!,
+              );
+            },
+            toFirestore: (squad, _) => squad.toJson(),
+          );
 
   get isLoggedIn => auth.currentUser != null;
 
@@ -61,6 +70,7 @@ class AuthHelper with ChangeNotifier {
           squad: squad,
           email: email,
         );
+
         usersRef.add(
           manager,
         );
@@ -128,11 +138,20 @@ class AuthHelper with ChangeNotifier {
     current!.squad.addPlayer(players[5]);
     current!.squad.addPlayer(players[6]);
     current!.squad.addPlayer(players[11]);
+    await squadRef.add(current!.squad);
     await usersRef.where('user_id', isEqualTo: user!.uid).get().then((value) {
       value.docs[0].reference.update({'squad': current!.squad.toJson()});
     }).onError((error, stackTrace) {});
 
     notifyListeners();
+  }
+
+  Future<Squad> getSquad(String squadId) async {
+    var s;
+    await squadRef.where('squadID', isEqualTo: squadId).get().then((value) {
+      s = value.docs.first.data();
+    });
+    return s;
   }
 
 ////// length of favorites
@@ -143,4 +162,5 @@ class AuthHelper with ChangeNotifier {
   //   print(list);
   //   return false;
   // }
+
 }
