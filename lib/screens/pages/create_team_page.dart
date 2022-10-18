@@ -205,7 +205,6 @@ class CreateTeamViewState extends State<CreateTeamView> {
                 onPressed: () {
                   AuthHelper auth =
                           Provider.of<AuthHelper>(context, listen: false);
-                  auth.printf();
                   var index = 0;
                   for (index =0; index < widget.selectedPlayers.length; index++) {
                   //   if (widget.selectedPlayers[index] == null) {

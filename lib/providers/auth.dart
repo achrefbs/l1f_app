@@ -31,11 +31,16 @@ class AuthHelper with ChangeNotifier {
             },
             toFirestore: (user, _) => user.toJson(),
           );
-  void printf(){
-    print('aaaaaaaaaaaaaa');
-    print(usersRef);
-  }
 
+  final squadRef =
+      FirebaseFirestore.instance.collection('Squads').withConverter<Squad>(
+            fromFirestore: (snapshot, _) {
+              return Squad.fromJson(
+                snapshot.data()!,
+              );
+            },
+            toFirestore: (squad, _) => squad.toJson(),
+          );
   get isLoggedIn => auth.currentUser != null;
 
   Future attemptSignUp({
@@ -43,38 +48,42 @@ class AuthHelper with ChangeNotifier {
     required String email,
     required String password,
     required String teamName,
-    required String confirm
+    required String confirm,
+    required int currentWeek,
   }) async {
     Manager manager;
     if (password == confirm) {
-    try {
-      squad.name = teamName;
-      squad.owner = username;
-      
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      manager = Manager(
-        userId: userCredential.user!.uid,
-        username: username,
-        isSuperAdmin: false,
-        squad: squad,
-        email: email,
-      );
-      usersRef.add(
-        manager,
-      );
-    } on FirebaseAuthException catch (_) {
-      return Errors.error;
+      try {
+        squad.name = teamName;
+        squad.owner = username;
+
+        UserCredential userCredential =
+            await auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        manager = Manager(
+          currentWeek: currentWeek,
+          userId: userCredential.user!.uid,
+          username: username,
+          isSuperAdmin: false,
+          squad: squad,
+          email: email,
+        );
+
+        usersRef.add(
+          manager,
+        );
+      } on FirebaseAuthException catch (_) {
+        return Errors.error;
+      }
+      current = manager;
+      return Errors.none;
+    } else {
+      return Errors.confirmMatchError;
     }
-    current = manager;
-    return Errors.none;
   }
-  else {
-    return  Errors.confirmMatchError;
-  }
-}
+
   attemptLogin(email, password) async {
     try {
       await auth.signInWithEmailAndPassword(
@@ -129,10 +138,30 @@ class AuthHelper with ChangeNotifier {
     current!.squad.addPlayer(players[5]);
     current!.squad.addPlayer(players[6]);
     current!.squad.addPlayer(players[11]);
+    await squadRef.add(current!.squad);
     await usersRef.where('user_id', isEqualTo: user!.uid).get().then((value) {
       value.docs[0].reference.update({'squad': current!.squad.toJson()});
     }).onError((error, stackTrace) {});
 
     notifyListeners();
   }
+
+
+  Future<Squad> getSquad(String squadId) async {
+    var s;
+    await squadRef.where('squadID', isEqualTo: squadId).get().then((value) {
+      s = value.docs.first.data();
+    });
+    return s;
+  }
+
+////// length of favorites
+  // CollectionReference manager =
+  //     FirebaseFirestore.instance.collection('manager');
+  // bool checkavailability() {
+  //   var list = manager.doc().get();
+  //   print(list);
+  //   return false;
+  // }
+
 }
