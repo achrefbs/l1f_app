@@ -53,7 +53,6 @@ class SignUpScreenState extends State<SignUpScreen> {
       currentWeek: currentWeek,
     )
         .then((value) {
-      print(value);
       var formdata = formstate.currentState;
       if (formdata!.validate()) {
         formdata.save();
