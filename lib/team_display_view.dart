@@ -21,11 +21,10 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
   @override
   Widget build(BuildContext context) {
     AuthHelper auth = Provider.of<AuthHelper>(context);
-    Manager manager = auth.current!;
-    Squad team = manager.squad;
+    Squad team = auth.currentSquad!;
     updateState() {
       setState(() {
-        team = manager.squad;
+        team = auth.currentSquad!;
       });
     }
 
@@ -77,17 +76,16 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
               child: saveChanges,
               onPressed: () {
                 setState(() {
-                  // saveChanges = FutureBuilder(
-                  //   future: InternetAsync().updateTeam(context),
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.connectionState == ConnectionState.done) {
-                  //       return const Text("Press to save changes");
-                  //     }
-
-                  //     // By default, show a loading spinner
-                  //     return const CircularProgressIndicator();
-                  //   },
-                  // );
+                  saveChanges = FutureBuilder(
+                    future: auth.updateSquad(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return const Text("Press to save changes");
+                      }
+                      // By default, show a loading spinner
+                      return const CircularProgressIndicator();
+                    },
+                  );
                 });
               }),
         ],

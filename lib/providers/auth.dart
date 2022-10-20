@@ -21,6 +21,7 @@ Squad squad = Squad.empty();
 class AuthHelper with ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   Manager? current;
+  Squad? currentSquad;
 
   final usersRef =
       FirebaseFirestore.instance.collection('Managers').withConverter<Manager>(
@@ -67,7 +68,7 @@ class AuthHelper with ChangeNotifier {
           userId: userCredential.user!.uid,
           username: username,
           isSuperAdmin: false,
-          squad: squad,
+          currentSquad: squad.squadID,
           email: email,
         );
 
@@ -116,31 +117,43 @@ class AuthHelper with ChangeNotifier {
     return current!;
   }
 
+  Future<Squad> getCurrentSquad() async {
+    if (currentSquad == null) {
+      await squadRef
+          .where('squadID', isEqualTo: current!.currentSquad)
+          .get()
+          .then((value) {
+        currentSquad = value.docs.first.data();
+      });
+    }
+    return squad;
+  }
+
   setSquad(List<Player> players, double price) async {
     final user = auth.currentUser;
-    current!.squad.price = price;
-    current!.squad.defNum = 3;
-    current!.squad.midNum = 4;
-    current!.squad.fwdNum = 3;
-    current!.squad.emptyPlayers();
-    current!.squad.addPlayer(players[0]);
-    current!.squad.addPlayer(players[2]);
-    current!.squad.addPlayer(players[3]);
-    current!.squad.addPlayer(players[4]);
-    current!.squad.addPlayer(players[7]);
-    current!.squad.addPlayer(players[8]);
-    current!.squad.addPlayer(players[9]);
-    current!.squad.addPlayer(players[10]);
-    current!.squad.addPlayer(players[12]);
-    current!.squad.addPlayer(players[13]);
-    current!.squad.addPlayer(players[14]);
-    current!.squad.addPlayer(players[1]);
-    current!.squad.addPlayer(players[5]);
-    current!.squad.addPlayer(players[6]);
-    current!.squad.addPlayer(players[11]);
-    await squadRef.add(current!.squad);
+    squad.price = price;
+    squad.defNum = 3;
+    squad.midNum = 4;
+    squad.fwdNum = 3;
+    squad.emptyPlayers();
+    squad.addPlayer(players[0]);
+    squad.addPlayer(players[2]);
+    squad.addPlayer(players[3]);
+    squad.addPlayer(players[4]);
+    squad.addPlayer(players[7]);
+    squad.addPlayer(players[8]);
+    squad.addPlayer(players[9]);
+    squad.addPlayer(players[10]);
+    squad.addPlayer(players[12]);
+    squad.addPlayer(players[13]);
+    squad.addPlayer(players[14]);
+    squad.addPlayer(players[1]);
+    squad.addPlayer(players[5]);
+    squad.addPlayer(players[6]);
+    squad.addPlayer(players[11]);
+    await squadRef.add(squad);
     await usersRef.where('user_id', isEqualTo: user!.uid).get().then((value) {
-      value.docs[0].reference.update({'squad': current!.squad.toJson()});
+      value.docs[0].reference.update({'currentSquad': squad.squadID});
     }).onError((error, stackTrace) {});
 
     notifyListeners();
@@ -155,13 +168,13 @@ class AuthHelper with ChangeNotifier {
     return s;
   }
 
-////// length of favorites
-  // CollectionReference manager =
-  //     FirebaseFirestore.instance.collection('manager');
-  // bool checkavailability() {
-  //   var list = manager.doc().get();
-  //   print(list);
-  //   return false;
-  // }
-
+  //update squad
+  updateSquad() {
+    squadRef
+        .where('squadID', isEqualTo: current!.currentSquad)
+        .get()
+        .then((value) {
+      value.docs[0].reference.update(currentSquad!.toJson());
+    });
+  }
 }

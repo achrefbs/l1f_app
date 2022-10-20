@@ -1,4 +1,5 @@
 import 'package:fantasyapp/models/manager.dart';
+import 'package:fantasyapp/models/squad.dart';
 import 'package:fantasyapp/providers/auth.dart';
 import 'package:fantasyapp/screens/login_screen.dart';
 import 'package:fantasyapp/screens/pages/fixtures_page.dart';
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
 
   late Future<Manager> currentManager;
+  late Future<Squad> currentSquad;
 
   @override
   void initState() {
@@ -76,7 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
                   if (snapshot.connectionState == ConnectionState.done) {
-                    return _items[selectedIndex];
+                    currentSquad = auth.getCurrentSquad();
+                    return FutureBuilder(builder: (context, snapshot) {
+                      return _items[selectedIndex];
+                    });
                   }
                   return const Center(
                     child: CircularProgressIndicator(),
