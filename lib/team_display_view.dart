@@ -34,25 +34,25 @@ class TeamDisplayViewState extends State<TeamDisplayView> {
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-            color: Colors.lightBlue,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Text("Points ${team.points}"),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    "This week ${team.getCurrentWeeklyPoints()}",
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+          //   color: Colors.lightBlue,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.start,
+          //     children: <Widget>[
+          //       Expanded(
+          //         flex: 1,
+          //         child: Text("Points ${team.points}"),
+          //       ),
+          //       Expanded(
+          //         flex: 1,
+          //         child: Text(
+          //           "This week ${team.getCurrentWeeklyPoints()}",
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           Expanded(
               child: Stack(children: <Widget>[
             Positioned.fill(
