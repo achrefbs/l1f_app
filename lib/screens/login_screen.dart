@@ -115,16 +115,16 @@ class LoginScreenState extends State<LoginScreen> {
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Positioned(
-                  bottom: 50,
-                  left: 30,
-                  right: 20,
-                  top: 100,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  top: 25,
                   child: Container(
                       decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withOpacity(0.8),
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(40),
-                            bottomRight: Radius.circular(40),
+                            topRight: Radius.circular(40),
                           ),
                           boxShadow: const [
                             // BoxShadow(

@@ -63,9 +63,9 @@ class SignUpScreenState extends State<SignUpScreen> {
           showInfo(context, "Account created successfully!");
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => CreateTeamView()));
-
-          // return true;
-        } else if (value == Errors.weakError) {
+          return true;
+        } 
+        else if (value == Errors.weakError) {
           // ignore: use_build_context_synchronously
           showError(context, "The password provided is too weak.");
         } else if (value == Errors.confirmMatchError) {
@@ -74,7 +74,8 @@ class SignUpScreenState extends State<SignUpScreen> {
         } else if (value == Errors.existsError) {
           // ignore: use_build_context_synchronously
           showError(context, "The account already exists for that email.");
-        } else {
+        } 
+        else {
           // ignore: use_build_context_synchronously
           showError(context, "Failed to create account!");
         }
@@ -104,16 +105,16 @@ class SignUpScreenState extends State<SignUpScreen> {
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Positioned(
-                      bottom: 50,
-                      left: 30,
-                      right: 20,
-                      top: 100,
+                      bottom: 0,
+                  left: 0,
+                  right: 0,
+                  top: 25,
                       child: Container(
                           decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withOpacity(0.8),
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(40),
-                                bottomRight: Radius.circular(40),
+                                topRight: Radius.circular(40),
                               ),
                               boxShadow: const [
                                 // BoxShadow(
@@ -249,9 +250,9 @@ class SignUpScreenState extends State<SignUpScreen> {
                                       child: TextFormField(
                                         validator: (text) {
                                           RegExp regex = RegExp(
-                                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
+                                              r'^(?=.*?[a-z])(?=.*?[0-9])');
                                           if (text!.isEmpty ||
-                                              text.length < 8) {
+                                              text.length < 6) {
                                             return "Please Enter a valid password over 8 characters";
                                           }
                                           if (!regex.hasMatch(text)) {
@@ -298,16 +299,19 @@ class SignUpScreenState extends State<SignUpScreen> {
                                           0.8,
                                       child: TextFormField(
                                         validator: (text) {
-                                          RegExp regex = RegExp(
-                                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
-                                          if (text!.isEmpty ||
-                                              text.length < 8) {
-                                            return "Please Enter a valid password over 8 characters";
-                                          }
-                                          if (!regex.hasMatch(text)) {
-                                            // || !text.contains(RegExp("r'[A-Z]+").toString()) || !text.contains(RegExp("r'[1-9]+").toString())) {
-                                            return "Password should contains  at least one upper case, one lower case and one digit ";
-                                          }
+                                          // RegExp regex = RegExp(
+                                          //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
+                                          // if (text!.isEmpty ||
+                                          //     text.length < 8) {
+                                          //   return "Please Enter a valid password over 8 characters";
+                                          // }
+                                          // if (!regex.hasMatch(text)) {
+                                          //   // || !text.contains(RegExp("r'[A-Z]+").toString()) || !text.contains(RegExp("r'[1-9]+").toString())) {
+                                          //   return "Password should contains  at least one upper case, one lower case and one digit ";
+                                          // }
+                                        if (passwordController.text != passwordConfirmController.text) {
+                                          return "password and confirm password should be the same";
+                                        }
                                           return null;
                                         },
                                         controller: passwordConfirmController,

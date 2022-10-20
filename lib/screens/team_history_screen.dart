@@ -69,6 +69,7 @@ class _TeamHistoryScreenState extends State<TeamHistoryScreen> {
                         }
                       },
                       icon: const Icon(
+                
                         Icons.arrow_forward_ios,
                         color: kBarTextColor,
                       ),
