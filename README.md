@@ -6,7 +6,7 @@ In the modern era, fantasy sports popularized as a fun game being played among f
 The fans choose real players from an online selection process, commonly known as a draft, and assemble a fantasy team. 
 Then the real-game statistics of the players are compiled and parallels are drawn to gauge whose fantasy team has performed the best.
 The players are able to track how their respective fantasy team is doing through different websites or mobile applications. Some of the players join leagues with their acquaintances and compete against people they only know. While others join the public leagues which are hosted by the websites and compete against the strangers.
-# our Application
+# Our Application
 Our application is a Tunisian version of Fantasy Premier League.
 It is developped from scratch with flutter dart language and firebase
 #screens
